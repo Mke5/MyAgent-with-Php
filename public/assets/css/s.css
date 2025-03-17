@@ -1,0 +1,247 @@
+/* Global styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f2f5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+
+/* >>>>>>>>>>>>>>>>>>>>>>>> LOADER <<<<<<<<<<<<<<<<<<<<< */
+
+.loader-container {
+    position: fixed;
+    inset: 0;
+    z-index: 999;
+    background: rgb(187, 217, 247);
+    display: grid;
+    place-content: center;
+    transition: opacity 0.4s ease-in-out, visibility 0.4s ease-in-out;
+}
+
+.loader-container.hidden {
+    opacity: 0;
+    visibility: hidden;
+}
+
+#page-content {
+    opacity: 0;
+    transform: translate3d(0, -1rem, 0);
+    transition: opacity 0.6s ease-in-out, transform 0.6s ease-in-out;
+}
+
+#page-content.visible {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+}
+
+.loader {
+    width: 3rem;
+    height: 3rem;
+    border: 0.3rem solid rgb(49, 133, 218);
+    border-left-color: transparent;
+    border-right-color: transparent;
+    border-radius: 50%;
+    animation: 0.8s ease infinite alternate spinner;
+}
+
+@keyframes spinner {
+    from{
+        transform: rotate(0deg) scale(1);
+    }
+
+    to {
+        transform: rotate(1turn) scale(1.2);
+    }
+}
+
+/* >>>>>>>>>>>>>>>>>>>>> END OF LOADER <<<<<<<<<<<<<<<<<<<< */
+
+/* Container for authentication pages */
+.auth-container {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+}
+
+.auth-form h2 {
+    margin-bottom: 1.5rem;
+    text-align: center;
+    color: #333;
+}
+
+/* Form elements styling */
+.formItem {
+    margin-bottom: 1rem;
+}
+
+.formItem label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+}
+
+.formItem input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+.formItem input:focus {
+    border-color: #7380ec;
+    outline: none;
+}
+
+.formItem input#password {
+    position: relative;
+    justify-content: space-between;
+    width: 100%;
+    height: 100%;
+    /* background: black; */
+}
+
+#see {
+    position: absolute;
+    transform: translateY(-150%);
+    cursor: pointer;
+    /* top: 57%; */
+    right: 38.5%;
+    color: black;
+}
+
+/* Button styling */
+.btn {
+    display: block;
+    width: 100%;
+    padding: 0.75rem;
+    background-color: #000;
+    color: white;
+    font-size: 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 1rem;
+    transition: all 300ms ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 3rem;
+}
+
+.btn:hover {
+    background-color: rgb(24, 23, 23);
+}
+
+.btn:active {
+    transform: translate3d(3px, 3px, 0);
+}
+
+.button--loader {
+    display: flex;
+    gap: 0.25rem;
+}
+
+.button--loader > div {
+    width: 0.6rem;
+    height: 0.6rem;
+    background: white;
+    border-radius: 50%;
+    animation: 1.2s infinite ease-in-out scaleUp;
+}
+
+.button--loader div:nth-child(1) {
+    animation-delay: -0.32s;
+}
+
+.button--loader div:nth-child(2) {
+    animation-delay: -0.16s;
+}
+
+@keyframes scaleUp {
+    0%, 100% {
+        transform: scale(0);
+    }
+    40% {
+        transform: scale(1);
+    }
+}
+
+.button--loader {
+    display: none;
+}
+
+.btn.loading .button--text{
+    display: none;
+}
+
+.btn.loading .button--loader{
+    display: flex;
+}
+
+
+
+
+/* Links and text */
+p {
+    margin-top: 1rem;
+    text-align: center;
+}
+
+a {
+    color: #7380ec;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 600px) {
+    .auth-container {
+        padding: 1rem;
+        max-width: 100%;
+    }
+
+    .auth-form h2 {
+        font-size: 1.5rem;
+    }
+
+    .formItem input {
+        font-size: 1rem;
+        padding: 0.8rem;
+    }
+
+    .btn {
+        padding: 0.8rem;
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 400px) {
+    .auth-container {
+        padding: 1rem;
+    }
+
+    .btn {
+        font-size: 0.9rem;
+        padding: 0.7rem;
+    }
+
+    .formItem input {
+        padding: 0.7rem;
+    }
+}
