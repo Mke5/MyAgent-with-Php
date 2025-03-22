@@ -44,15 +44,15 @@ class Pager
 
         // Generate first page link
         $query_params['page'] = 1;
-        $this->links['first'] = ROOT . "/" . $url . "?" . http_build_query($query_params);
+        $this->links['first'] = ROOT_URL . "/" . $url . "?" . http_build_query($query_params);
 
         // Generate current page link
         $query_params['page'] = $this->page_number;
-        $this->links['current'] = ROOT . "/" . $url . "?" . http_build_query($query_params);
+        $this->links['current'] = ROOT_URL . "/" . $url . "?" . http_build_query($query_params);
 
         // Generate next page link
         $query_params['page'] = $this->page_number + 1;
-        $this->links['next'] = ROOT . "/" . $url . "?" . http_build_query($query_params);
+        $this->links['next'] = ROOT_URL . "/" . $url . "?" . http_build_query($query_params);
     }
 
     public function display($record_count = null)

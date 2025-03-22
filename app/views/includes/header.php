@@ -62,9 +62,9 @@
             <a href="<?= ROOT_URL ?>/about">About</a>
 
             <?php if($session->user('role')): ?>
-                <?php if($session->user('role')): ?>
-                    <a href="<?= ROOT_URL ?>/dashboard">Profile</a>
-                <?php endif; ?>
+                
+                <a href="<?= ROOT_URL ?>/dashboard">Profile</a>
+                
                 <a href="<?= ROOT_URL ?>/logout">Logout</a>
             <?php else: ?>
                 <a href="<?= ROOT_URL ?>/signin" class="btn">Log in</a>
@@ -90,8 +90,9 @@
                 <li><a href="<?= ROOT_URL ?>/about">About</a></li>
                 
                 <?php if($session->user('role')): ?>
-                    <li><a href="<?= ROOT_URL ?>/dashboard">Dashboard</a></li>
-                <?php else:?>
+                    <li><a href="<?= ROOT_URL ?>/dashboard/index">Dashboard</a></li>
+                    <li><a href="<?= ROOT_URL ?>/logout">Logout</a></li>
+                <?php else:?> 
                     <li><a href="<?= ROOT_URL ?>/signin" class="btn">Log in</a></li>
                     <li><a href="<?= ROOT_URL ?>/signup" class="btn">Create Account</a></li>
                 <?php endif; ?>
