@@ -6,13 +6,6 @@
 
     $user = new User();
 
-    $email = $_SESSION['signup-data']['email'] ?? null;
-    $password = $_SESSION['signup-data']['password'] ?? null;
-    $lname = $_SESSION['signup-data']['lname'] ?? null;
-    $fname = $_SESSION['signup-data']['fname'] ?? null;
-
-    unset($_SESSION['signup-data']);
-
     if ($session->user()) {
         redirect('home');
     }
@@ -34,15 +27,15 @@
             <p>
                 <small style="color: rgb(211, 8, 8);">
                     <?php
-                        if(isset($_SESSION['signup'])){
-                            echo $_SESSION['signup'];
-                            unset($_SESSION['signup']);
+                        if ($message = $session->pop('signup')) {
+                            echo $message;
                         }
                     ?>
                 </small>
             </p>
             <br>
-            <form id="signupForm" action="<?= ROOT_URL ?>" method="post" enctype="multipart/form-data">
+            <form id="signupForm" action="<?= ROOT_URL ?>/signup/register" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="csrf_token" value="<?= $session->csrf_token(); ?>">
                 <div class="formItem">
                     <label for="fname">First Name:</label>
                     <input type="text" id="fname" name="fname" value="<?= $fname ?>" placeholder="First Name" required>
