@@ -34,19 +34,19 @@
                 </small>
             </p>
             <br>
-            <form id="signupForm" action="<?= ROOT_URL ?>/signup/register" method="post" enctype="multipart/form-data">
+            <form id="signupForm" action="<?= ROOT_URL ?>/signup/register" method="Post" enctype="multipart/form-data">
                 <input type="hidden" name="csrf_token" value="<?= $session->csrf_token(); ?>">
                 <div class="formItem">
                     <label for="fname">First Name:</label>
-                    <input type="text" id="fname" name="fname" value="<?= $fname ?>" placeholder="First Name" required>
+                    <input type="text" id="fname" name="fname" value="<?= $session->get('fname')?>" placeholder="First Name" required>
                 </div>
                 <div class="formItem">
                     <label for="lname">Last Name:</label>
-                    <input type="text" id="lname" name="lname" value="<?= $lname ?>" placeholder="Last Name" required>
+                    <input type="text" id="lname" name="lname" value="<?= $session->get('lname')?>" placeholder="Last Name" required>
                 </div>
                 <div class="formItem">
                     <label for="email">Email:</label>
-                    <input type="email" name="email" id="email" placeholder="Email" value="<?= $email ?>" required>
+                    <input type="email" name="email" id="email" placeholder="Email" value="<?= $session->get('last_email')?>" required>
                 </div>
                 <div class="formItem">
                     <label for="password">Password:</label>
@@ -63,6 +63,10 @@
                     <label for="img">Profile Picture:</label>
                     <input type="file" name="image" id="img" accept="image/png, image/jpeg, image/jpg" required>
                 </div>
+                <!-- <div class="" style="margin: 2rem 0;">
+                    <input type="checkbox" name="terms" id="terms" required>
+                    <label for="terms">I agree to the terms and conditions</label>
+                </div> -->
                 <button type="submit" name="submit" class="btn" id="btn-submit">
                     <span class="button--text">Sign Up</span>
 

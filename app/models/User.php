@@ -19,19 +19,38 @@ class User
 	{
 		$this->errors = [];
 
-		if(empty($data['email'])) {
+		if(isset($data['email']) && empty($data['email'])) {
 			throw new \Exception("Email is required");
 		} elseif (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
 			throw new \Exception("Invalid email format");
 		}
 		
-		if(empty($data['password'])) {
+		if(isset($data['password']) && empty($data['password'])) {
 			throw new \Exception("Password is required");
 		}
 		
-		// if(empty($data['terms'])) {
-		// 	throw new \Exception("You must agree to the terms and conditions");
-		// }
+		if(isset($data['terms']) && empty($data['terms'])) {
+			throw new \Exception("You must agree to the terms and conditions");
+		}
+
+		if(isset($data['password']) && strlen($data['password']) < 6) {
+			throw new \Exception("Password must be at least 6 characters long");
+		}
+
+		if(isset($data['fname']) && empty($data['fname'])) {
+			throw new \Exception("First name is required");
+		}
+
+		if(isset($data['lname']) && empty($data['lname'])) {
+			throw new \Exception("Last name is required");
+		}
+
+		if(isset($data['image']) && $data['image']['error'] !== 4) {
+			$allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+			if (!in_array($data['image']['type'], $allowedTypes)) {
+				throw new \Exception('Invalid image type. Allowed: JPEG, PNG, GIF.');
+			}
+		}
 
 		return true;
 	}
@@ -83,7 +102,12 @@ class User
 		// Upload image
 		$imageName = null;
 		if ($image['error'] === 0) {
-			$imageName = $this->uploadImage($image);
+
+			try {
+				$imageName = $this->uploadImage($image);
+			} catch (\Throwable $th) {
+				throw new \Exception($th->getMessage());
+			}
 		}
 
 		// Insert into database
@@ -118,7 +142,10 @@ class User
 		}
 
 		// Allowed file types
-		$uploadDir = __DIR__ . '/public/profile-pictures/';
+		$uploadDir = dirname(ASSETS) . '/profile-pictures/';
+		if(!is_dir($uploadDir)) {
+			mkdir($uploadDir, 0777, true);
+		}
 		$allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
 		$maxFileSize = 1 * 1024 * 1024; // 1MB
 
