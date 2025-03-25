@@ -142,7 +142,7 @@ class User
 		}
 
 		// Allowed file types
-		$uploadDir = dirname(ASSETS) . '/profile-pictures/';
+		$uploadDir = $_SERVER['DOCUMENT_ROOT'] . "/MyAgent/public/profile-pictures/";
 		if(!is_dir($uploadDir)) {
 			mkdir($uploadDir, 0777, true);
 		}
@@ -170,6 +170,12 @@ class User
 			return $imageName;
 		}
 
+		if (!move_uploaded_file($image['tmp_name'], $imagePath)) {
+			echo "Debugging: Upload failed. Error: " . error_get_last()['message'] . "\n";
+			die;
+			throw new \Exception('Failed to upload image.');
+		}
+		
 		throw new \Exception('Failed to upload image.');
 	}
 }

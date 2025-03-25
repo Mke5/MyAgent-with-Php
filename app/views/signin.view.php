@@ -84,7 +84,7 @@
         </div>
     </div>
     
-    <script src="<?=ROOT_URL?>assets/js/see.js"></script>
+    <script src="<?=ASSETS?>/js/see.js"></script>
 
 </body>
 </html>

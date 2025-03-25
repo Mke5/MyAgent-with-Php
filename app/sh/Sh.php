@@ -763,10 +763,10 @@ Migration:
 
                 $this->markMigrationAsExecuted($pdo, $migrationFile);
                 echo $this->colorText(" ✓ Done", "32") . "\n";
+            }else {
+                echo $this->colorText(" ✗ Failed", "31") . "\n";
+                die;
             }
-            echo $sql;
-            
-            
         }
         
         echo $this->colorText("\nMigration completed successfully!", "32") . "\n";
