@@ -17,8 +17,6 @@ class User
 
 	public function validate($data)
 	{
-		$this->errors = [];
-
 		if(isset($data['email']) && empty($data['email'])) {
 			throw new \Exception("Email is required");
 		} elseif (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {

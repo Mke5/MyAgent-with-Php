@@ -24,13 +24,19 @@
 
                 <div class="card col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                     <div class="card-body">
-
-                        <form class="needs-validation" action="<?= ROOTPATH ?>/listing/createlisting" method="post" enctype="multipart/form-data">
+                        <?php if ($message = $session->pop('listing')): ?>
+                            <div class="alert alert-danger" role="alert" style="text-align: center;">
+                                <?= $message ?>
+                            </div>
+                        <?php endif; ?>
+                        <form class="needs-validation" action="<?= ROOT_URL ?>/listing/createlisting" method="post" enctype="multipart/form-data">
                             <input type="hidden" name="csrf_token" value="<?= $session->csrf_token(); ?>">
+                            <input type="hidden" name="user_id" value="<?= $session->user('id') ?>">
+
                             <div class="form-container">
                                 <div class="form-group">
                                     <label for="input-select">Type</label>
-                                    <select class="form-control selectpicker" name="type" id="input-select">
+                                    <select class="form-control selectpicker" name="type" id="input-select" required>
                                         <option value="" disabled selected>Select House Type</option>
     
                                         <!-- Detached Houses -->
@@ -71,7 +77,7 @@
 
                                 <div class="form-group">
                                     <label for="input-select">Category</label>
-                                    <select class="form-control selectpicker" name="category" id="input-select">
+                                    <select class="form-control selectpicker" name="category" id="input-select" required>
                                         <option value="for_sale">For Sale</option>
                                         <option value="for_sale">For Rent</option>
                                     </select>
@@ -87,29 +93,29 @@
                             <div class="form-container">
                                 <div class="form-group">
                                     <label for="inputText1" class="col-form-label">Sittingroom(s)</label>
-                                    <input id="inputText1" name="sittingroom" value="" type="number" min="1" class="form-control" placeholder="Available sittingrooms">
+                                    <input id="inputText1" name="sittingroom" value="" type="number" min="1" class="form-control" placeholder="Available sittingrooms" required>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="inputText4" class="col-form-label">Bedroom(s)</label>
-                                    <input id="inputText4" name="bedroom" value="" type="number" min="1" class="form-control" placeholder="Available bedrooms">
+                                    <input id="inputText4" name="bedroom" value="" type="number" min="1" class="form-control" placeholder="Available bedrooms" required>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="inputText2" class="col-form-label">Bathroom(s)</label>
-                                    <input id="inputText2" name="bathroom" value="" type="number" min="1" class="form-control" placeholder="Available bathrooms">
+                                    <input id="inputText2" name="bathroom" value="" type="number" min="1" class="form-control" placeholder="Available bathrooms" required>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="inputText3" class="col-form-label">Kitchen(s)</label>
-                                    <input id="inputText3" name="kitchen" value="" type="number" min="1" class="form-control" placeholder="Available kitchens">
+                                    <input id="inputText3" name="kitchen" value="" type="number" min="1" class="form-control" placeholder="Available kitchens" required>
                                 </div>
                             </div>
 
                             <div class="form-container">
                                 <div class="form-group">
                                     <label for="input-select">State</label>
-                                    <select class="form-control selectpicker" name="state" id="state">
+                                    <select class="form-control selectpicker" name="state" id="state" required>
                                         <option value="">State</option>
                                         <?php foreach ($states as $state => $lgas): ?>
                                             <option value="<?= $state ?>"><?= $state ?></option>
@@ -119,7 +125,7 @@
 
                                 <div class="form-group">
                                     <label for="input-select">LGA</label>
-                                    <select class="form-control selectpicker" name="lga" id="lga">
+                                    <select class="form-control selectpicker" name="lga" id="lga" required>
                                         <option value="">Select LGA</option>
                                     </select>
                                 </div>
@@ -155,12 +161,12 @@
 
                             <div class="form-group">
                                 <label for="inputText00" class="col-form-label">Price</label>
-                                <input id="inputText00" name="price" value="" type="number" min="1" class="form-control" placeholder="Price of the Listing">
+                                <input id="inputText00" name="price" value="" type="number" min="1" class="form-control" placeholder="Price of the Listing" required>
                             </div>
 
                             <div class="form-group">
-                                <label for="inputText0" class="col-form-label">Images of the Listing</label>
-                                <input id="inputText0" name="image[]" value="" type="file" multiple class="form-control">
+                                <label for="inputText0" class="col-form-label">Images of the Listing: 10 max ( less than 1mb each )</label>
+                                <input id="inputText0" name="image[]" type="file" multiple class="form-control" required>
                             </div>
 
                             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" style="display: flex;justify-content: center;">

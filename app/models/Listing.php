@@ -16,89 +16,140 @@ class Listing {
     public function validate($data)
     {
 
-        if(isset($data['type']) && empty($data['type']))
+        if(!isset($data['type']) && empty($data['type']))
         {
             throw new \Exception("Type is required");
         }
         
-        if(isset($data['description']) && empty($data['description']))
+        if(!isset($data['description']) && empty($data['description']))
         {
             throw new \Exception("Description is required");
         }
 
-        if(isset($data['sittingroom']) && empty($data['sittingroom']))
+        if(!isset($data['sittingroom']) && empty($data['sittingroom']))
         {
             throw new \Exception("Sitting room is required");
         }
 
-        if(isset($data['bathroom']) && empty($data['bathroom']))
+        if(!isset($data['bathroom']) && empty($data['bathroom']))
         {
             throw new \Exception("Bathroom is required");
         }
 
-        if(isset($data['bedroom']) && empty($data['bedroom']))
+        if(!isset($data['bedroom']) && empty($data['bedroom']))
         {
             throw new \Exception("Bedroom is required");
         }
 
-        if(isset($data['kitchen']) && empty($data['kitchen']))
+        if(!isset($data['kitchen']) && empty($data['kitchen']))
         {
             throw new \Exception("Kitchen is required");
         }
         
-        if(isset($data['price']) && empty($data['price']))
+        if(!isset($data['price']) && empty($data['price']))
         {
             throw new \Exception("Price is required");
         }
         
-        if(isset($data['category']) && empty($data['category']))
+        if(!isset($data['category']) && empty($data['category']))
         {
             throw new \Exception("Category is required");
         }
         
-        if(isset($data['user_id']) && empty($data['user_id']))
+        if(!isset($data['user_id']) && empty($data['user_id']))
         {
             throw new \Exception("User is required");
         }
 
-        if(isset($data['address']) && empty($data['address']))
+        if(!isset($data['address']) && empty($data['address']))
         {
             throw new \Exception("Address is required");
         }
 
-        if(isset($data['state']) && empty($data['state']))
+        if(!isset($data['state']) && empty($data['state']))
         {
             throw new \Exception("State is required");
         }
 
-        if(isset($data['lga']) && empty($data['lga']))
+        if(!isset($data['lga']) && empty($data['lga']))
         {
             throw new \Exception("LGA is required");
         }
 
-        if (isset($data['image']) && is_array($data['image']['name'])) {
+        if (isset($_FILES['image']) && is_array($_FILES['image']['name'])) {
             $allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
-            $maxSize = 1 * 1024 * 1024; // 1MB in bytes
+            $maxSize = 1 * 1024 * 1024; // 1MB
+            $maxFiles = 10;
         
-            // Check if the number of uploaded images exceeds 10
-            if (count($data['image']['name']) > 10) {
+            $filteredFiles = array_filter($_FILES['image']['name']);
+        
+            if (empty($filteredFiles)) {
+                throw new \Exception('Please upload at least one image.');
+            }
+        
+            if (count($filteredFiles) > $maxFiles) {
                 throw new \Exception('You can upload a maximum of 10 images.');
             }
         
-            foreach ($data['image']['name'] as $key => $name) {
-                if ($data['image']['error'][$key] !== 4) { // Ignore empty file inputs
-                    if (!in_array($data['image']['type'][$key], $allowedTypes)) {
-                        throw new \Exception('Invalid image type for file: ' . $name . '. Allowed: JPEG, PNG, GIF.');
-                    }
+            foreach ($_FILES['image']['name'] as $key => $name) {
+                if ($_FILES['image']['error'][$key] === UPLOAD_ERR_NO_FILE) {
+                    continue; // Ignore empty file fields
+                }
         
-                    if ($data['image']['size'][$key] > $maxSize) {
-                        throw new \Exception('File ' . $name . ' exceeds the 1MB size limit.');
-                    }
+                if ($_FILES['image']['error'][$key] !== UPLOAD_ERR_OK) {
+                    throw new \Exception('Error uploading file: ' . $name);
+                }
+        
+                // Validate MIME type using finfo
+                $finfo = finfo_open(FILEINFO_MIME_TYPE);
+                $mimeType = finfo_file($finfo, $_FILES['image']['tmp_name'][$key]);
+                finfo_close($finfo);
+        
+                if (!in_array($mimeType, $allowedTypes)) {
+                    throw new \Exception('Invalid image type for file: ' . $name . '. Allowed: JPEG, PNG, GIF.');
+                }
+        
+                // Check file size
+                if ($_FILES['image']['size'][$key] > $maxSize) {
+                    throw new \Exception('File ' . $name . ' exceeds the 1MB size limit.');
                 }
             }
+        } else {
+            throw new \Exception('Please upload at least one image.');
         }
+        
+        
 
         return true;
+    }
+
+    private function createListing($data)
+    {
+        $sql = "INSERT INTO $this->table (type, description, sittingroom, bathroom, bedroom, kitchen, price, category, author_id, address, state, lga) VALUES (:type, :description, :sittingroom, :bathroom, :bedroom, :kitchen, :price, :category, :user_id, :address, :state, :lga)";
+
+        return $this->write($sql, $data, $returnID = true);
+    }
+
+    private function createListingImages($listingId, $images)
+    {
+        $sql = "INSERT INTO listing_images (listing_id, image_path) VALUES (:listing_id, :image_path)";
+        foreach ($images as $image) {
+            $data = [
+                'listing_id' => $listingId,
+                'image_path' => $image
+            ];
+    
+            $this->write($sql, $data);
+        }
+    }
+
+    public function create($data, $images)
+    {
+        if (!$listingId = $this->createListing($data)) {
+            throw new \Exception('Failed to create listing.');
+        }
+
+        $this->createListingImages($listingId, $images);
     }
 
     public function findById($id)
