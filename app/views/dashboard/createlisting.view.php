@@ -3,7 +3,7 @@
 <?php include_once "includes/sidebar.php"?>   
 
     <?php include_once "includes/states.php"?>
-    
+
     <div class="dashboard-wrapper">
         <div class="container-fluid dashboard-content">
                 
@@ -65,19 +65,43 @@
                             <div class="form-container">
                                 <div class="form-group">
                                     <label for="input-select">State</label>
-                                    <select class="form-control selectpicker" name="state" id="input-select">
-                                        <option value="for_sale">For Sale</option>
-                                        <option value="for_sale">For Rent</option>
+                                    <select class="form-control selectpicker" name="state" id="state">
+                                        <option value="">State</option>
+                                        <?php foreach ($states as $state => $lgas): ?>
+                                            <option value="<?= $state ?>"><?= $state ?></option>
+                                        <?php endforeach; ?>
                                     </select>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="input-select">LGA</label>
-                                    <select class="form-control selectpicker" name="lga" id="input-select">
-                                        <option value="for_sale">For Sale</option>
-                                        <option value="for_sale">For Rent</option>
+                                    <select class="form-control selectpicker" name="lga" id="lga">
+                                        <option value="">Select LGA</option>
                                     </select>
                                 </div>
+
+                                <script>
+                                    document.addEventListener("DOMContentLoaded", function () {
+                                        const states = <?= json_encode($states) ?>;
+                                        const stateSelect = document.getElementById("state");
+                                        const lgaSelect = document.getElementById("lga");
+
+                                        stateSelect.addEventListener("change", function () {
+                                            const selectedState = this.value;
+                                            lgaSelect.innerHTML = '<option value="">Select LGA</option>';
+                                            
+                                            if (selectedState && states[selectedState]) {
+                                                states[selectedState].forEach(lga => {
+                                                    const option = document.createElement("option");
+                                                    option.value = lga;
+                                                    option.textContent = lga;
+                                                    lgaSelect.appendChild(option);
+                                                });
+                                            }
+                                        });
+                                    });
+                                </script>
+
 
                                 <div class="form-group">
                                     <label for="validationServer">Address</label>
