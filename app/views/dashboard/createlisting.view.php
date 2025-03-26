@@ -2,7 +2,8 @@
 
 <?php include_once "includes/sidebar.php"?>   
 
-
+    <?php include_once "includes/states.php"?>
+    
     <div class="dashboard-wrapper">
         <div class="container-fluid dashboard-content">
                 
@@ -14,10 +15,9 @@
                 <div class="card col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                     <div class="card-body">
 
-                        <form class="needs-validation" action="<?= ROOTPATH ?>/listing/createlisting" method="POST" enctype="multipart/form-data">
+                        <form class="needs-validation" action="<?= ROOTPATH ?>/listing/createlisting" method="post" enctype="multipart/form-data">
 
                             <div class="form-container">
-
                                 <div class="form-group">
                                     <label for="validationServer01">Name</label>
                                     <input type="text" class="form-control" id="validationServer01" placeholder="Name of the Listing" value="" required>
@@ -30,7 +30,6 @@
                                         <option value="for_sale">For Rent</option>
                                     </select>
                                 </div>
-
                             </div>
                             
 
@@ -85,8 +84,6 @@
                                     <input type="text" value="" class="form-control" id="validationServer" placeholder="Address of the Listing" value="" required>
                                 </div>
                             </div>
-
-                            
 
                             <div class="form-group">
                                 <label for="inputText00" class="col-form-label">Price</label>
