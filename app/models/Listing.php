@@ -13,52 +13,92 @@ class Listing {
     protected $table = 'listings';
     protected $tableImages = 'listing_images';
 
-    protected $allowedColumns = [
-
-        'title',
-        'description',
-        'price',
-        'category_id',
-        'user_id',
-        'created_at',
-        'updated_at'
-    ];
-
     public function validate($data)
     {
-        $this->errors = [];
 
-        if(empty($data['title']))
+        if(isset($data['type']) && empty($data['type']))
         {
-            $this->errors['title'] = "Title is required";
+            throw new \Exception("Type is required");
         }
         
-        if(empty($data['description']))
+        if(isset($data['description']) && empty($data['description']))
         {
-            $this->errors['description'] = "Description is required";
-        }
-        
-        if(empty($data['price']))
-        {
-            $this->errors['price'] = "Price is required";
-        }
-        
-        if(empty($data['category_id']))
-        {
-            $this->errors['category_id'] = "Category is required";
-        }
-        
-        if(empty($data['user_id']))
-        {
-            $this->errors['user_id'] = "User is required";
+            throw new \Exception("Description is required");
         }
 
-        if(empty($this->errors))
+        if(isset($data['sittingroom']) && empty($data['sittingroom']))
         {
-            return true;
+            throw new \Exception("Sitting room is required");
         }
 
-        return false;
+        if(isset($data['bathroom']) && empty($data['bathroom']))
+        {
+            throw new \Exception("Bathroom is required");
+        }
+
+        if(isset($data['bedroom']) && empty($data['bedroom']))
+        {
+            throw new \Exception("Bedroom is required");
+        }
+
+        if(isset($data['kitchen']) && empty($data['kitchen']))
+        {
+            throw new \Exception("Kitchen is required");
+        }
+        
+        if(isset($data['price']) && empty($data['price']))
+        {
+            throw new \Exception("Price is required");
+        }
+        
+        if(isset($data['category']) && empty($data['category']))
+        {
+            throw new \Exception("Category is required");
+        }
+        
+        if(isset($data['user_id']) && empty($data['user_id']))
+        {
+            throw new \Exception("User is required");
+        }
+
+        if(isset($data['address']) && empty($data['address']))
+        {
+            throw new \Exception("Address is required");
+        }
+
+        if(isset($data['state']) && empty($data['state']))
+        {
+            throw new \Exception("State is required");
+        }
+
+        if(isset($data['lga']) && empty($data['lga']))
+        {
+            throw new \Exception("LGA is required");
+        }
+
+        if (isset($data['image']) && is_array($data['image']['name'])) {
+            $allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+            $maxSize = 1 * 1024 * 1024; // 1MB in bytes
+        
+            // Check if the number of uploaded images exceeds 10
+            if (count($data['image']['name']) > 10) {
+                throw new \Exception('You can upload a maximum of 10 images.');
+            }
+        
+            foreach ($data['image']['name'] as $key => $name) {
+                if ($data['image']['error'][$key] !== 4) { // Ignore empty file inputs
+                    if (!in_array($data['image']['type'][$key], $allowedTypes)) {
+                        throw new \Exception('Invalid image type for file: ' . $name . '. Allowed: JPEG, PNG, GIF.');
+                    }
+        
+                    if ($data['image']['size'][$key] > $maxSize) {
+                        throw new \Exception('File ' . $name . ' exceeds the 1MB size limit.');
+                    }
+                }
+            }
+        }
+
+        return true;
     }
 
     public function findById($id)

@@ -1,3 +1,13 @@
+<?php
+    
+    $session = new Core\Session;
+
+    if (!$session->user()) {
+        redirect('home');
+    }
+
+?>
+
 <?php include_once "includes/header.php"?>
 
 <?php include_once "includes/sidebar.php"?>   
@@ -16,11 +26,47 @@
                     <div class="card-body">
 
                         <form class="needs-validation" action="<?= ROOTPATH ?>/listing/createlisting" method="post" enctype="multipart/form-data">
-
+                            <input type="hidden" name="csrf_token" value="<?= $session->csrf_token(); ?>">
                             <div class="form-container">
                                 <div class="form-group">
-                                    <label for="validationServer01">Name</label>
-                                    <input type="text" class="form-control" id="validationServer01" placeholder="Name of the Listing" value="" required>
+                                    <label for="input-select">Type</label>
+                                    <select class="form-control selectpicker" name="type" id="input-select">
+                                        <option value="" disabled selected>Select House Type</option>
+    
+                                        <!-- Detached Houses -->
+                                        <optgroup label="Detached Houses">
+                                            <option value="single_family">Single-Family Home</option>
+                                            <option value="bungalow">Bungalow</option>
+                                            <option value="cottage">Cottage</option>
+                                            <option value="mansion">Mansion</option>
+                                            <option value="villa">Villa</option>
+                                        </optgroup>
+
+                                        <!-- Semi-Detached & Attached Houses -->
+                                        <optgroup label="Semi-Detached & Attached Houses">
+                                            <option value="semi_detached">Semi-Detached House</option>
+                                            <option value="terraced">Terraced House (Row House)</option>
+                                            <option value="townhouse">Townhouse</option>
+                                        </optgroup>
+
+                                        <!-- Multi-Unit Residential Buildings -->
+                                        <optgroup label="Multi-Unit Residential">
+                                            <option value="duplex">Duplex</option>
+                                            <option value="triplex">Triplex</option>
+                                            <option value="fourplex">Fourplex</option>
+                                            <option value="apartment">Apartment (Flat)</option>
+                                            <option value="condo">Condominium (Condo)</option>
+                                        </optgroup>
+
+                                        <!-- Traditional & Regional Houses -->
+                                        <optgroup label="Traditional & Regional Houses">
+                                            <option value="hut">Hut</option>
+                                            <option value="cabin">Cabin</option>
+                                            <option value="longhouse">Longhouse</option>
+                                            <option value="yurt">Yurt</option>
+                                            <option value="igloo">Igloo</option>
+                                        </optgroup>
+                                    </select>
                                 </div>
 
                                 <div class="form-group">
@@ -35,28 +81,28 @@
 
                             <div class="form-group">
                                 <label for="validationServer05">Description</label>
-                                <textarea type="text" class="form-control" id="validationServer05" placeholder="Description of the Listing" value="" required></textarea>
+                                <textarea type="text" class="form-control" id="validationServer05" placeholder="Description of the Listing" value="" name="description" required></textarea>
                             </div>
 
                             <div class="form-container">
                                 <div class="form-group">
                                     <label for="inputText1" class="col-form-label">Sittingroom(s)</label>
-                                    <input id="inputText1" value="" type="number" min="1" class="form-control" placeholder="Available sittingrooms">
+                                    <input id="inputText1" name="sittingroom" value="" type="number" min="1" class="form-control" placeholder="Available sittingrooms">
                                 </div>
 
                                 <div class="form-group">
                                     <label for="inputText4" class="col-form-label">Bedroom(s)</label>
-                                    <input id="inputText4" value="" type="number" min="1" class="form-control" placeholder="Available bedrooms">
+                                    <input id="inputText4" name="bedroom" value="" type="number" min="1" class="form-control" placeholder="Available bedrooms">
                                 </div>
 
                                 <div class="form-group">
                                     <label for="inputText2" class="col-form-label">Bathroom(s)</label>
-                                    <input id="inputText2" value="" type="number" min="1" class="form-control" placeholder="Available bathrooms">
+                                    <input id="inputText2" name="bathroom" value="" type="number" min="1" class="form-control" placeholder="Available bathrooms">
                                 </div>
 
                                 <div class="form-group">
                                     <label for="inputText3" class="col-form-label">Kitchen(s)</label>
-                                    <input id="inputText3" value="" type="number" min="1" class="form-control" placeholder="Available kitchens">
+                                    <input id="inputText3" name="kitchen" value="" type="number" min="1" class="form-control" placeholder="Available kitchens">
                                 </div>
                             </div>
 
@@ -103,22 +149,22 @@
 
                                 <div class="form-group">
                                     <label for="validationServer">Address</label>
-                                    <input type="text" value="" class="form-control" id="validationServer" placeholder="Address of the Listing" value="" required>
+                                    <input type="text" value="" name="address" class="form-control" id="validationServer" placeholder="Address of the Listing" value="" required>
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label for="inputText00" class="col-form-label">Price</label>
-                                <input id="inputText00" value="" type="number" min="1" class="form-control" placeholder="Price of the Listing">
+                                <input id="inputText00" name="price" value="" type="number" min="1" class="form-control" placeholder="Price of the Listing">
                             </div>
 
                             <div class="form-group">
                                 <label for="inputText0" class="col-form-label">Images of the Listing</label>
-                                <input id="inputText0" value="" type="file" multiple class="form-control">
+                                <input id="inputText0" name="image[]" value="" type="file" multiple class="form-control">
                             </div>
 
                             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" style="display: flex;justify-content: center;">
-                                <button class="btn btn-dark" type="submit">Create Listing</button>
+                                <button class="btn btn-dark" type="submit" name="submit">Create Listing</button>
                             </div>
                         </form>
                         
