@@ -38,8 +38,6 @@
                                 <textarea type="text" class="form-control" id="validationServer05" placeholder="Description of the Listing" value="" required></textarea>
                             </div>
 
-                           
-
                             <div class="form-container">
                                 <div class="form-group">
                                     <label for="inputText1" class="col-form-label">Sittingroom(s)</label>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
+    <meta name="theme-color" content="#000">
     <link rel="stylesheet" href="<?=ASSETS?>/assets/vendor/bootstrap/css/bootstrap.min.css">
     <link href="<?=ASSETS?>assets/vendor/fonts/circular-std/style.css" rel="stylesheet">
     <link rel="stylesheet" href="<?=ASSETS?>assets/libs/css/style.css">
@@ -48,10 +48,6 @@
             flex: 1;
         }
     </style>
-    <!-- <link rel="stylesheet" href="assets/vendor/charts/chartist-bundle/chartist.css"> -->
-    <!-- <link rel="stylesheet" href="assets/vendor/charts/morris-bundle/morris.css"> -->
-    <!-- <link rel="stylesheet" href="assets/vendor/charts/c3charts/c3.css"> -->
-    <!-- <link rel="stylesheet" href="assets/vendor/fonts/flag-icon-css/flag-icon.min.css"> -->
     <title>Agent Dashboard</title>
 </head>
 <body>

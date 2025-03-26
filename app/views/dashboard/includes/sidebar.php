@@ -12,7 +12,7 @@
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link active" href="<?=ROOT_URL?>/dashboard/index"><i class="fa fa-fw fa-user-circle"></i>Dashboard</a>
+                        <a class="nav-link <?=$_SERVER['REQUEST_URI']=='/MyAgent/dashboard/index' ? 'active' :''?>" href="<?=ROOT_URL?>/dashboard/index"><i class="fa fa-fw fa-user-circle"></i>Dashboard</a>
                     </li>
 
                     <li class="nav-item">
@@ -20,7 +20,7 @@
                         <div id="submenu-2" class="collapse submenu">
                             <ul class="nav flex-column">
                                 <li class="nav-item">
-                                    <a class="nav-link" href="<?=ROOT_URL?>/dashboard/createlisting">Create House Listing</a>
+                                    <a class="nav-link <?=$_SERVER['REQUEST_URI']=='/MyAgent/dashboard/createlisting' ? 'active' :''?>" href="<?=ROOT_URL?>/dashboard/createlisting">Create House Listing</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="<?=ROOT_URL?>/dashboard/searchlisting">Search Listing</a>
@@ -48,7 +48,7 @@
                     </li> -->
                     
                     <li class="nav-item">
-                        <a class="nav-link" href="<?=ROOT_URL?>/dashboard/listings"><i class="fas fa-fw fa-table"></i>All Listings</a>
+                        <a class="nav-link <?=$_SERVER['REQUEST_URI']=='/MyAgent/dashboard/listings' ? 'active' :''?>" href="<?=ROOT_URL?>/dashboard/listings"><i class="fas fa-fw fa-table"></i>All Listings</a>
                     </li>
                     
                 </ul>
