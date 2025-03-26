@@ -38,6 +38,15 @@
         .footer {
             flex-shrink: 0;
         }
+
+        .form-container {
+            display: flex;
+            gap: 20px;
+        }
+
+        .form-group {
+            flex: 1;
+        }
     </style>
     <!-- <link rel="stylesheet" href="assets/vendor/charts/chartist-bundle/chartist.css"> -->
     <!-- <link rel="stylesheet" href="assets/vendor/charts/morris-bundle/morris.css"> -->
