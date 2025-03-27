@@ -11,7 +11,7 @@ class Listing {
     use Database;
 
     protected $table = 'listings';
-    protected $tableImages = 'listing_images';
+    protected $tableImages = 'listings_images';
 
     public function validate($data)
     {
@@ -123,34 +123,134 @@ class Listing {
         return true;
     }
 
-    private function createListing($data)
+    private function createListing($db, $data)
     {
-        $sql = "INSERT INTO $this->table (type, description, sittingroom, bathroom, bedroom, kitchen, price, category, author_id, address, state, lga) VALUES (:type, :description, :sittingroom, :bathroom, :bedroom, :kitchen, :price, :category, :user_id, :address, :state, :lga)";
+        $sql = "INSERT INTO $this->table (name, description, sittingroom, bathroom, bedroom, kitchen, price, category, author_id, address, state, lga) 
+                VALUES (:type, :description, :sittingroom, :bathroom, :bedroom, :kitchen, :price, :category, :user_id, :address, :state, :lga)";
+        
+        $stmt = $db->prepare($sql);
+        if ($stmt->execute($data)) {
+            return $db->lastInsertId(); // ✅ Use same DB connection
+        }
 
-        return $this->write($sql, $data, $returnID = true);
+        return false;
     }
 
-    private function createListingImages($listingId, $images)
+
+
+
+    private function deleteUploadedImages($imagePaths)
     {
-        $sql = "INSERT INTO listing_images (listing_id, image_path) VALUES (:listing_id, :image_path)";
-        foreach ($images as $image) {
-            $data = [
-                'listing_id' => $listingId,
-                'image_path' => $image
-            ];
-    
-            $this->write($sql, $data);
+        foreach ($imagePaths as $imagePath) {
+            $fullPath = $_SERVER['DOCUMENT_ROOT'] . $imagePath;
+            if (file_exists($fullPath)) {
+                unlink($fullPath);
+            }
         }
     }
+
+    private function createListingImages($db, $listingId, $imagePaths)
+    {
+        $sql = "INSERT INTO listing_images (listing_id, image_path) VALUES (:listing_id, :image_path)";
+        $stmt = $db->prepare($sql);
+
+        foreach ($imagePaths as $imagePath) {
+            $data = [
+                'listing_id' => $listingId,
+                'image_path' => $imagePath
+            ];
+            $stmt->execute($data);
+        }
+    }
+
+
+
+    private function uploadImage($image)
+    {
+        $uploadDir = $_SERVER['DOCUMENT_ROOT'] . "/MyAgent/public/listing-images/";
+        if (!is_dir($uploadDir)) {
+            mkdir($uploadDir, 0777, true);
+        }
+
+        $allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+        $maxFileSize = 1 * 1024 * 1024;
+
+        if ($image['error'] !== UPLOAD_ERR_OK) {
+            throw new \Exception("Upload error ({$image['name']}): Code " . $image['error']);
+        }
+
+        if (!in_array($image['type'], $allowedTypes)) {
+            throw new \Exception('Invalid image type. Allowed: JPEG, PNG, GIF.');
+        }
+
+        if (!is_uploaded_file($image['tmp_name'])) {
+            throw new \Exception('The file was not uploaded via HTTP POST.');
+        }
+
+        if (!file_exists($image['tmp_name'])) {
+            throw new \Exception("Temporary file not found for " . $image['name']);
+        }
+
+        if ($image['size'] > $maxFileSize) {
+            throw new \Exception('Image size exceeds 1MB.');
+        }
+
+        $fileExtension = pathinfo($image['name'], PATHINFO_EXTENSION);
+        $imageName = uniqid('listing_', true) . '_' . bin2hex(random_bytes(5)) . '.' . $fileExtension;
+        $imagePath = $uploadDir . $imageName;
+
+        if (!move_uploaded_file($image['tmp_name'], $imagePath)) {
+            throw new \Exception('Failed to upload image: ' . $image['name']);
+        }
+
+        return $imagePath;
+    }   
 
     public function create($data, $images)
     {
-        if (!$listingId = $this->createListing($data)) {
-            throw new \Exception('Failed to create listing.');
-        }
+        $uploadedImages = [];
+        $db = $this->connect(); // Get DB connection
 
-        $this->createListingImages($listingId, $images);
+        try {
+            $db->beginTransaction(); // ✅ Start transaction
+
+            if (!isset($images['name']) || count($images['name']) === 0) {
+                throw new \Exception('No images uploaded.');
+            }
+
+            // Upload images
+            foreach ($images['name'] as $key => $name) {
+                $image = [
+                    'name'     => $images['name'][$key],
+                    'type'     => $images['type'][$key],
+                    'tmp_name' => $images['tmp_name'][$key],
+                    'error'    => $images['error'][$key],
+                    'size'     => $images['size'][$key]
+                ];
+                if ($image['error'] !== UPLOAD_ERR_OK) {
+                    throw new \Exception("File upload error for $name. Code: " . $image['error']);
+                }
+                $uploadedImages[] = $this->uploadImage($image);
+            }
+
+            // Create listing (pass $db to ensure same connection)
+            if (!$listingId = $this->createListing($db, $data)) {
+                throw new \Exception('Failed to create listing.');
+            }
+
+            // Store image paths in DB
+            $this->createListingImages($db, $listingId, $uploadedImages);
+
+            $db->commit(); // ✅ Commit transaction (all steps succeeded)
+
+        } catch (\Exception $e) {
+            $db->rollBack(); // ❌ Rollback if any step fails
+            $this->deleteUploadedImages($uploadedImages);
+            throw $e;
+        }
     }
+
+
 
     public function findById($id)
     {

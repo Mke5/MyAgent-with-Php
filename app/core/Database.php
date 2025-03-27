@@ -35,16 +35,10 @@ trait Database
         return (!empty($result)) ? $result : [];
     }
 
-    public function write($query, $data = [], $returnID = false)
+    public function write($query, $data = [])
     {
         $db = $this->connect();
         $stmt = $db->prepare($query);
-        $stmt->execute($data);
-
-        if($returnID){
-            return $db->lastInsertId();
-        }else{
-            return true;
-        }
+        return $stmt->execute($data);
     }
 }

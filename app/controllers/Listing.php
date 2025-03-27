@@ -45,13 +45,16 @@ class Listing extends Controller
 			$data['price'] = esc(trim(filter_var($_POST['price'], FILTER_SANITIZE_SPECIAL_CHARS)));
 			$data['category'] = esc(trim(filter_var($_POST['category'], FILTER_SANITIZE_SPECIAL_CHARS)));
 			$data['user_id'] = esc(trim(filter_var($_POST['user_id'], FILTER_SANITIZE_SPECIAL_CHARS)));
+			$data['state'] = esc(trim(filter_var($_POST['state'], FILTER_SANITIZE_SPECIAL_CHARS)));
+			$data['lga'] = esc(trim(filter_var($_POST['lga'], FILTER_SANITIZE_SPECIAL_CHARS)));
+			$data['address'] = esc(trim(filter_var($_POST['address'], FILTER_SANITIZE_SPECIAL_CHARS)));
 			$images = $_FILES['image'];
 
 
 			try{
 				$listing->create($data, $images);
 				$session->set('listing-s', 'Listing created successfully');
-				redirect('dashboard/createlisting');
+				redirect('dashboard/index');
 				exit;
 			}catch (\Exception $e){
 				$session->set('listing', $e->getMessage());

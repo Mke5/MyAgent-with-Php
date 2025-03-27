@@ -139,7 +139,6 @@ class User
 			throw new \Exception('File upload error. Code: ' . $image['error']);
 		}
 
-		// Allowed file types
 		$uploadDir = $_SERVER['DOCUMENT_ROOT'] . "/MyAgent/public/profile-pictures/";
 		if(!is_dir($uploadDir)) {
 			mkdir($uploadDir, 0777, true);
