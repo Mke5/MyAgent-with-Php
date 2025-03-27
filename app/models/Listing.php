@@ -130,7 +130,7 @@ class Listing {
         
         $stmt = $db->prepare($sql);
         if ($stmt->execute($data)) {
-            return $db->lastInsertId(); // ✅ Use same DB connection
+            return $db->lastInsertId();
         }
 
         return false;
@@ -167,7 +167,7 @@ class Listing {
 
     private function uploadImage($image)
     {
-        $uploadDir = $_SERVER['DOCUMENT_ROOT'] . "/MyAgent/public/listing-images/";
+        $uploadDir = $_SERVER['DOCUMENT_ROOT'] . "/MyAgent/public/assets/listing-images/";
         if (!is_dir($uploadDir)) {
             mkdir($uploadDir, 0777, true);
         }
@@ -209,16 +209,14 @@ class Listing {
     public function create($data, $images)
     {
         $uploadedImages = [];
-        $db = $this->connect(); // Get DB connection
+        $db = $this->connect();
 
         try {
-            $db->beginTransaction(); // ✅ Start transaction
-
-            if (!isset($images['name']) || count($images['name']) === 0) {
+            $db->beginTransaction(); 
+                if (!isset($images['name']) || count($images['name']) === 0) {
                 throw new \Exception('No images uploaded.');
             }
 
-            // Upload images
             foreach ($images['name'] as $key => $name) {
                 $image = [
                     'name'     => $images['name'][$key],
@@ -233,18 +231,16 @@ class Listing {
                 $uploadedImages[] = $this->uploadImage($image);
             }
 
-            // Create listing (pass $db to ensure same connection)
             if (!$listingId = $this->createListing($db, $data)) {
                 throw new \Exception('Failed to create listing.');
             }
 
-            // Store image paths in DB
             $this->createListingImages($db, $listingId, $uploadedImages);
 
-            $db->commit(); // ✅ Commit transaction (all steps succeeded)
+            $db->commit();
 
         } catch (\Exception $e) {
-            $db->rollBack(); // ❌ Rollback if any step fails
+            $db->rollBack();
             $this->deleteUploadedImages($uploadedImages);
             throw $e;
         }

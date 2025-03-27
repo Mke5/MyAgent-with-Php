@@ -55,7 +55,7 @@
 
         <div class="dashboard-header">
             <nav class="navbar navbar-expand-lg bg-white fixed-top" style="height: 3rem;">
-                <a class="navbar-brand" href="index.html" style="text-transform: none; font-size: 1.5rem;color: black;">MyAgent</a>
+                <a class="navbar-brand" href="<?=ROOT_URL?>" style="text-transform: none; font-size: 1.5rem;color: black;">MyAgent</a>
                 <div class="collapse navbar-collapse " id="navbarSupportedContent">
                     <ul class="navbar-nav ml-auto navbar-right-top">
                         <li class="nav-item dropdown notification">

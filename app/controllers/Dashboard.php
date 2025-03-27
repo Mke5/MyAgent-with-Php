@@ -44,7 +44,7 @@ class Dashboard extends Controller
             redirect('signin');
         }
 
-        $this->view('dashboard/user');
+        $this->view('dashboard/users');
     }
 
     public function listings(){

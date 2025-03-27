@@ -69,6 +69,13 @@ class User
 		return $result ? $result[0] : false;
 	}
 
+	public function getAll(){
+		$sql = "SELECT * FROM $this->table WHERE role != 'admin'";
+		$result = $this->read($sql);
+
+		return $result ? $result : false;
+	}
+
 	public function getUserImage($userId)
 	{
 		$sql = "SELECT image FROM $this->table WHERE id = :id LIMIT 1";
@@ -139,7 +146,7 @@ class User
 			throw new \Exception('File upload error. Code: ' . $image['error']);
 		}
 
-		$uploadDir = $_SERVER['DOCUMENT_ROOT'] . "/MyAgent/public/profile-pictures/";
+		$uploadDir = $_SERVER['DOCUMENT_ROOT'] . "/MyAgent/public/assets/profile-pictures/";
 		if(!is_dir($uploadDir)) {
 			mkdir($uploadDir, 0777, true);
 		}
