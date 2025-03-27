@@ -5,4 +5,6 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 
 #send everything else to the index page
+RewriteRule ^listing-images/(.*)$ assets/$1 [L]
+RewriteRule ^profile-pictures/(.*)$ assets/$1 [L]
 RewriteRule ^(.*)$ index.php?url=$1 [L,QSA]
