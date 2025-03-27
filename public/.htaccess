@@ -1,10 +1,12 @@
 RewriteEngine On
 
-#accept loading of actual files and directories
+# Allow direct access to images, CSS, and JavaScript files
+RewriteCond %{REQUEST_URI} \.(png|jpe?g|gif|svg|webp|css|js|ico|woff|woff2|ttf|otf|eot|mp4|webm)$ [NC]
+RewriteRule .* - [L]
+
+# Accept loading of actual files and directories
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 
-#send everything else to the index page
-RewriteRule ^listing-images/(.*)$ assets/$1 [L]
-RewriteRule ^profile-pictures/(.*)$ assets/$1 [L]
+# Send everything else to index.php
 RewriteRule ^(.*)$ index.php?url=$1 [L,QSA]
