@@ -440,7 +440,7 @@
                     </div>
                 <?php endforeach; ?>
             <?php else :?>
-                <h2 style="text-align: center;">No listing found!</h2>
+                <h2 style="text-align: center;margin: auto;">No listing found!</h2>
             <?php endif;?>
         </div>
     </section>

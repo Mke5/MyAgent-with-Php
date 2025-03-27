@@ -385,7 +385,7 @@
                     </div>
                 <?php endforeach; ?>
             <?php else :?>
-                <h2>No listings found!</h2>
+                <h2 style="margin: auto;" >No listings found!</h2>
             <?php endif;?>
         </div>
     </section>
