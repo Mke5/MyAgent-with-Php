@@ -151,7 +151,7 @@ class Listing {
 
     private function createListingImages($db, $listingId, $imagePaths)
     {
-        $sql = "INSERT INTO listing_images (listing_id, image_path) VALUES (:listing_id, :image_path)";
+        $sql = "INSERT INTO $this->tableImages (listing_id, image) VALUES (:listing_id, :image_path)";
         $stmt = $db->prepare($sql);
 
         foreach ($imagePaths as $imagePath) {
