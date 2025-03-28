@@ -10,11 +10,9 @@
     $listings = new Listing();
     $session = new Session();
 
-    // show(get_declared_classes());
 
-
-    if(isset($_SESSION['USER'])){
-        $userId = $_SESSION['USER']['id'];
+    if($session->is_logged_in()){
+        $userId = $session->user('id');
         
         if(!$user->findById($userId)){
             session_unset();
@@ -24,15 +22,14 @@
     }
     
 
-    // Get user profile image if logged in
-    $profilePicture = ROOT_URL . 'profile-pictures/defaultProfilePicture.png'; // Default profile picture
+    $profilePicture = ASSETS . "profile-pictures/" . esc($user->getUserImage($userId));
 
     if(isset($userId)){
-        $userImg = $user->getUserImage($userId);
+        $userImg = esc($user->getUserImage($userId));
         if($session->user('role') === "admin") {
-            $profilePicture = ROOT_URL . 'profile-pictures/' . $userImg;
+            $profilePicture = ASSETS . 'profile-pictures/' . $userImg;
         } elseif(null !== ($userImg) && !empty($userImg) && file_exists('profile-pictures/' . $userImg)) {
-            $profilePicture = ROOT_URL . 'profile-pictures/' . $userImg;
+            $profilePicture = ASSETS . 'profile-pictures/' . $userImg;
         }
     }
 ?>
@@ -100,7 +97,7 @@
         </div>
 
         <div class="auth-section">
-            <?php if($session->user('role')): ?>
+            <?php if($session->is_logged_in()): ?>
                 <div class="profile-picture">
                     <img src="<?= $profilePicture ?>" alt="Profile Picture">
                 </div>

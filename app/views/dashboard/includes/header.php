@@ -73,7 +73,7 @@
                             <ul class="dropdown-menu dropdown-menu-right notification-dropdown">
                                 <li>
                                     <div class="notification-title"> Notification</div>
-                                    <div class="notification-list">
+                                    <!-- <div class="notification-list">
                                         <div class="list-group">
                                             <a href="#" class="list-group-item list-group-item-action active">
                                                 <div class="notification-info">
@@ -108,7 +108,7 @@
                                                 </div>
                                             </a>
                                         </div>
-                                    </div>
+                                    </div> -->
                                 </li>
                                 <li>
                                     <div class="list-footer"> <a href="#">View all notifications</a></div>
@@ -118,7 +118,7 @@
                         <li class="nav-item dropdown connection">
                             <a class="nav-link" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="fas fa-fw fa-th"></i> </a>
                             <ul class="dropdown-menu dropdown-menu-right connection-dropdown">
-                                <li class="connection-list">
+                                <!-- <li class="connection-list">
                                     <div class="row">
                                         <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12 ">
                                             <a href="#" class="connection-item"><img src="assets/images/github.png" alt="" > <span>Github</span></a>
@@ -141,20 +141,23 @@
                                             <a href="#" class="connection-item"><img src="assets/images/slack.png" alt="" > <span>Slack</span></a>
                                         </div>
                                     </div>
-                                </li>
+                                </li> -->
                                 <li>
                                     <div class="conntection-footer"><a href="#">More</a></div>
                                 </li>
                             </ul>
                         </li>
                         <li class="nav-item dropdown nav-user">
-                            <a class="nav-link nav-user-img" href="#" id="navbarDropdownMenuLink2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="<?=ASSETS?>profile-pictures/<?=$userl->getUserImage($session->user('id'))?>" alt="" class="user-avatar-md rounded-circle"></a>
+                            <a class="nav-link nav-user-img" href="#" id="navbarDropdownMenuLink2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="<?=ASSETS?>profile-pictures/<?=esc($userl->getUserImage($session->user('id')))?>" alt="" class="user-avatar-md rounded-circle"></a>
                             <div class="dropdown-menu dropdown-menu-right nav-user-dropdown" aria-labelledby="navbarDropdownMenuLink2">
                                 <div class="nav-user-info">
-                                    <h5 class="mb-0 text-white nav-user-name">John Abraham </h5>
-                                    <span class="status"></span><span class="ml-2">Available</span>
+                                    <h5 class="mb-0 text-white nav-user-name"><?= ucfirst(esc($session->user('fname')))." ".ucfirst(esc($session->user('lname')))?></h5>
+                                    <span class="status"></span><span class="ml-2"><?=ucfirst(esc($session->user('role')))?></span>
                                 </div>
-                                <a class="dropdown-item" href="#"><i class="fas fa-user mr-2"></i>Account</a>
+                                <form action="<?=ROOT_URL?>/dashboard/user" method="post">
+                                    <input type="text" value="<?=$session->user('id')?>" name="user_id" hidden>
+                                    <button style="cursor: pointer;" class="dropdown-item" name="viewUser"><i class="fas fa-user mr-2"></i>Account</button>
+                                </form>
                                 <a class="dropdown-item" href="#"><i class="fas fa-cog mr-2"></i>Setting</a>
                                 <a class="dropdown-item" href="<?=ROOT_URL?>/logout"><i class="fas fa-power-off mr-2"></i>Logout</a>
                             </div>
