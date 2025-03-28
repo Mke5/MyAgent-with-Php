@@ -65,4 +65,8 @@ class Dashboard extends Controller
         $this->view('dashboard/search');
     }
 
+    public function user(){
+        $this->view('dashboard/user');
+    }
+
 }

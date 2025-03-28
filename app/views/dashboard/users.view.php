@@ -10,8 +10,6 @@
 
     $users = $user->getAll();
 
-    show($users);
-
 ?>
 
 
@@ -45,23 +43,21 @@
                                         </td>
                                         <td><?= ucfirst(esc($user->fname))?></td>
                                         <td><?= ucfirst(esc($user->lname))?></td>
-                                        <td>1,00,000 / 1,50,000</td>
-                                        <td>70%</td>
-                                        <td>7 Aug,2018</td>
+                                        <td><?= esc($user->total_listings)?></td>
+                                        <td><?= esc($user->status)?></td>
+                                        <td><?= esc($user->created_at)?></td>
                                         <td>
                                             <div class="dropdown float-right">
                                                 <a href="#" class="dropdown-toggle card-drop" data-toggle="dropdown" aria-expanded="true">
                                                         <i class="mdi mdi-dots-vertical"></i>
                                                             </a>
                                                 <div class="dropdown-menu dropdown-menu-right">
-                                                    <!-- item-->
-                                                    <a href="javascript:void(0);" class="dropdown-item">Sales Report</a>
-                                                    <!-- item-->
-                                                    <a href="javascript:void(0);" class="dropdown-item">Export Report</a>
-                                                    <!-- item-->
-                                                    <a href="javascript:void(0);" class="dropdown-item">Profit</a>
-                                                    <!-- item-->
-                                                    <a href="javascript:void(0);" class="dropdown-item">Action</a>
+                                                    <a href="javascript:void(0);" class="dropdown-item">Block</a>
+                                                    <!-- <a href="<?= ROOT_URL?>/dashboard/user" class="dropdown-item">view</a> -->
+                                                    <form action="<?=ROOT_URL?>/dashboard/user" method="post">
+                                                        <input type="text" value="<?= $user->id?>" name="user_id" hidden>
+                                                        <button class="dropdown-item" name="viewUser">view</button>
+                                                    </form>
                                                 </div>
                                             </div>
                                         </td>

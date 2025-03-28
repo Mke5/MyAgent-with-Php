@@ -1,3 +1,13 @@
+<?php 
+
+    use Core\Session;
+    use App\Models\User;
+
+    $user = new User;
+
+    $session = new Session;
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -55,7 +65,7 @@
 
         <div class="dashboard-header">
             <nav class="navbar navbar-expand-lg bg-white fixed-top" style="height: 3rem;">
-                <a class="navbar-brand" href="<?=ROOT_URL?>" style="text-transform: none; font-size: 1.5rem;color: black;">MyAgent</a>
+                <a class="navbar-brand" href="<?=ROOT_URL;?>" style="text-transform: none; font-size: 1.5rem;color: black;">MyAgent</a>
                 <div class="collapse navbar-collapse " id="navbarSupportedContent">
                     <ul class="navbar-nav ml-auto navbar-right-top">
                         <li class="nav-item dropdown notification">
@@ -138,7 +148,7 @@
                             </ul>
                         </li>
                         <li class="nav-item dropdown nav-user">
-                            <a class="nav-link nav-user-img" href="#" id="navbarDropdownMenuLink2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="assets/images/avatar-1.jpg" alt="" class="user-avatar-md rounded-circle"></a>
+                            <a class="nav-link nav-user-img" href="#" id="navbarDropdownMenuLink2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="<?=ASSETS?>profile-pictures/<?=$user->getUserImage($session->user('id'))?>" alt="" class="user-avatar-md rounded-circle"></a>
                             <div class="dropdown-menu dropdown-menu-right nav-user-dropdown" aria-labelledby="navbarDropdownMenuLink2">
                                 <div class="nav-user-info">
                                     <h5 class="mb-0 text-white nav-user-name">John Abraham </h5>
@@ -146,7 +156,7 @@
                                 </div>
                                 <a class="dropdown-item" href="#"><i class="fas fa-user mr-2"></i>Account</a>
                                 <a class="dropdown-item" href="#"><i class="fas fa-cog mr-2"></i>Setting</a>
-                                <a class="dropdown-item" href="#"><i class="fas fa-power-off mr-2"></i>Logout</a>
+                                <a class="dropdown-item" href="<?=ROOT_URL?>/logout"><i class="fas fa-power-off mr-2"></i>Logout</a>
                             </div>
                         </li>
                     </ul>

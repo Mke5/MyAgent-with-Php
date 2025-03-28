@@ -70,7 +70,11 @@ class User
 	}
 
 	public function getAll(){
-		$sql = "SELECT * FROM $this->table WHERE role != 'admin'";
+		$sql = "SELECT u.*, COUNT(l.id) AS total_listings 
+				FROM $this->table AS u
+				LEFT JOIN listings AS l ON u.id = l.author_id
+				WHERE u.role != 'admin'
+				GROUP BY u.id";
 		$result = $this->read($sql);
 
 		return $result ? $result : false;

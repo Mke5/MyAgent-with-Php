@@ -258,7 +258,7 @@ class Listing {
     
     public function findByUserId($id)
     {
-        $sql = "SELECT * FROM $this->table WHERE user_id = :id";
+        $sql = "SELECT * FROM $this->table WHERE author_id = :id";
         $result = $this->read($sql, ['id' => $id]);
 
         return $result ? $result : [];
@@ -266,7 +266,7 @@ class Listing {
     
     public function findByCategoryId($id)
     {
-        $sql = "SELECT * FROM $this->table WHERE category_id = :id";
+        $sql = "SELECT * FROM $this->table WHERE category = :id";
         $result = $this->read($sql, ['id' => $id]);
 
         return $result ? $result : [];
@@ -274,7 +274,7 @@ class Listing {
     
     public function findByCategoryAndUserId($category_id, $user_id)
     {
-        $sql = "SELECT * FROM $this->table WHERE category_id = :category_id AND user_id = :user_id";
+        $sql = "SELECT * FROM $this->table WHERE category = :category_id AND author_id = :user_id";
         $result = $this->read($sql, ['category_id' => $category_id, 'user_id' => $user_id]);
 
         return $result ? $result : [];
