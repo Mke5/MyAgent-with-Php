@@ -19,6 +19,7 @@
         redirect('home');
         exit;
     }
+
 ?>
 <?php include_once "includes/header.php"?>
 
