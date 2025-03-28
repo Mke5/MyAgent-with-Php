@@ -2,7 +2,7 @@
 
 <?php include_once "includes/sidebar.php"?>
 
-<?php 
+<?php
 
     use App\Models\User;
 
@@ -53,7 +53,7 @@
                                                             </a>
                                                 <div class="dropdown-menu dropdown-menu-right">
                                                     <a href="javascript:void(0);" class="dropdown-item">Block</a>
-                                                    <!-- <a href="<?= ROOT_URL?>/dashboard/user" class="dropdown-item">view</a> -->
+
                                                     <form action="<?=ROOT_URL?>/dashboard/user" method="post">
                                                         <input type="text" value="<?= $user->id?>" name="user_id" hidden>
                                                         <button class="dropdown-item" name="viewUser">view</button>

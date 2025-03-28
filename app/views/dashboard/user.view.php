@@ -4,7 +4,7 @@
     use App\Models\User;
     use App\Models\Listing;
 
-    $listing = new Listing;
+    $listingL = new Listing;
     $user = new User;
 
     if(isset($_POST['viewUser'])){
@@ -76,7 +76,7 @@
                                 <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12">
                                     <div class="card">
                                         <div class="card-body">
-                                            <h1 class="mb-1"><?= esc(count($listing->findByUserId($user->id)))?></h1>
+                                            <h1 class="mb-1"><?= esc(count($listingL->findByUserId($user->id)))?></h1>
                                             <p>Total Listings</p>
                                         </div>
                                     </div>
@@ -84,7 +84,7 @@
                                 <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12">
                                     <div class="card">
                                         <div class="card-body">
-                                            <h1 class="mb-1"><?= esc(count($listing->findByUserId($user->id)))?></h1>
+                                            <h1 class="mb-1"><?= esc(count($listingL->findByUserId($user->id)))?></h1>
                                             <p>Available Listings</p>
                                         </div>
                                     </div>
@@ -92,7 +92,7 @@
                                 <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12">
                                     <div class="card">
                                         <div class="card-body">
-                                            <h1 class="mb-1"><?= esc(count($listing->findByCategoryAndUserId('for_rent' ,$user->id)))?></h1>
+                                            <h1 class="mb-1"><?= esc(count($listingL->findByCategoryAndUserId('for_rent' ,$user->id)))?></h1>
                                             <p>For Rent</p>
                                         </div>
                                     </div>
@@ -100,7 +100,7 @@
                                 <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12">
                                     <div class="card">
                                         <div class="card-body">
-                                            <h1 class="mb-1"><?= esc(count($listing->findByCategoryAndUserId('for_sale' ,$user->id)))?></h1>
+                                            <h1 class="mb-1"><?= esc(count($listingL->findByCategoryAndUserId('for_sale' ,$user->id)))?></h1>
                                             <p>For Sale</p>
                                         </div>
                                     </div>
@@ -109,7 +109,7 @@
                             <div class="section-block">
                                 <h3 class="section-title">All Listings</h3>
                             </div>
-                            <?php if(count($listings = $listing->findByUserId($user->id)) > 0) : ?>
+                            <?php if(count($listings = $listingL->findByUserId($user->id)) > 0) : ?>
                                 <?php foreach($listings as $listing) : ?>
                                     <div class="card">
                                         <div class="card-body">
@@ -117,7 +117,8 @@
                                                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                                     <div class="media influencer-profile-data d-flex align-items-center p-2">
                                                         <div class="mr-4">
-                                                            <img src="assets/images/slack.png" alt="listing image" class="user-avatar-lg">
+                                                        <?php $listingId = $listing->id; $image = $listingL->getImage($listingId);?>
+                                                            <img src="<?=ASSETS?>listing-images/<?=$image->image?>" alt="listing image" class="user-avatar-lg">
                                                         </div>
                                                         <div class="media-body ">
                                                             <div class="influencer-profile-data">
@@ -152,57 +153,42 @@
                             <div class="section-block">
                                 <h3 class="section-title">For Sale</h3>
                             </div>
-                            <?php if(count($listing->findByCategoryAndUserId('for_sale' ,$user->id)) > 0) : ?>
-                                <div class="card">
-                                    <div class="card-body">
-                                        <div class="row">
-                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                                <div class="media influencer-profile-data d-flex align-items-center p-2">
-                                                    <div class="mr-4">
-                                                        <img src="assets/images/slack.png" alt="listing image" class="user-avatar-lg">
-                                                    </div>
-                                                    <div class="media-body ">
-                                                        <div class="influencer-profile-data">
-                                                            <h3 class="m-b-10">Your Campaign Title Here</h3>
-                                                            <p>
-                                                                <span class="m-r-20 d-inline-block">Draft Due Date
-                                                                    <span class="m-l-10 text-primary">24 Jan 2018</span>
-                                                                </span>
-                                                                <span class="m-r-20 d-inline-block"> Publish Date
-                                                                    <span class="m-l-10 text-secondary">30 Feb 2018</span>
-                                                                </span>
-                                                                    <span class="m-r-20 d-inline-block">Ends <span class="m-l-10  text-info">30 May, 2018</span>
-                                                                </span>
-                                                            </p>
+                            <?php if(count($listingL->findByCategoryAndUserId('for_sale' ,$user->id)) > 0) : ?>
+                                <?php foreach($listings as $listing) : ?>
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                    <div class="media influencer-profile-data d-flex align-items-center p-2">
+                                                        <div class="mr-4">
+                                                        <?php $listingId = $listing->id; $image = $listingL->getImage($listingId);?>
+                                                            <img src="<?=ASSETS?>listing-images/<?=$image->image?>" alt="listing image" class="user-avatar-lg">
+                                                        </div>
+                                                        <div class="media-body ">
+                                                            <div class="influencer-profile-data">
+                                                                <h3 class="m-b-10"><?= $listing->name?></h3>
+                                                                <p>
+                                                                    <span class="m-r-20 d-inline-block">Date Created
+                                                                        <span class="m-l-10 text-primary"><?=$listing->created_at?></span>
+                                                                    </span>
+                                                                    <span class="m-r-20 d-inline-block"> Date Updated
+                                                                        <span class="m-l-10 text-primary"><?=$listing->updated_at?></span>
+                                                                    </span>
+                                                                </p>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="border-top card-footer p-0">
-                                        <div class="campaign-metrics d-xl-inline-block">
-                                            <h4 class="mb-0">45k</h4>
-                                            <p>Total Reach</p>
-                                        </div>
-                                        <div class="campaign-metrics d-xl-inline-block">
-                                            <h4 class="mb-0">29k</h4>
-                                            <p>Total Views</p>
-                                        </div>
-                                        <div class="campaign-metrics d-xl-inline-block">
-                                            <h4 class="mb-0">5k</h4>
-                                            <p>Total Click</p>
-                                        </div>
-                                        <div class="campaign-metrics d-xl-inline-block">
-                                            <h4 class="mb-0">4k</h4>
-                                            <p>Engagement</p>
-                                        </div>
-                                        <div class="campaign-metrics d-xl-inline-block">
-                                            <h4 class="mb-0">2k</h4>
-                                            <p>Conversion</p>
+                                        <div class="border-top card-footer p-0">
+                                            <div class="campaign-metrics d-xl-inline-block">
+                                                <h4 class="mb-0"><?=$listing->views?></h4>
+                                                <p>Total Views</p>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
+                                <?php endforeach;?>
                             <?php else :?>
                                 <h4 style="text-align: center;">No Listing Yet</h4>
                             <?php endif;?>
@@ -211,110 +197,45 @@
                         <div class="section-block">
                                 <h3 class="section-title">For Rent</h3>
                             </div>
-                            <?php if(count($listing->findByCategoryAndUserId('for_rent' ,$user->id)) > 0) : ?>
-                                <div class="card">
-                                    <div class="card-body">
-                                        <div class="row">
-                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                                <div class="media influencer-profile-data d-flex align-items-center p-2">
-                                                    <div class="mr-4">
-                                                        <img src="assets/images/slack.png" alt="listing image" class="user-avatar-lg">
-                                                    </div>
-                                                    <div class="media-body ">
-                                                        <div class="influencer-profile-data">
-                                                            <h3 class="m-b-10">Your Campaign Title Here</h3>
-                                                            <p>
-                                                                <span class="m-r-20 d-inline-block">Draft Due Date
-                                                                    <span class="m-l-10 text-primary">24 Jan 2018</span>
-                                                                </span>
-                                                                <span class="m-r-20 d-inline-block"> Publish Date
-                                                                    <span class="m-l-10 text-secondary">30 Feb 2018</span>
-                                                                </span>
-                                                                    <span class="m-r-20 d-inline-block">Ends <span class="m-l-10  text-info">30 May, 2018</span>
-                                                                </span>
-                                                            </p>
+                            <?php if(count($listingL->findByCategoryAndUserId('for_rent' ,$user->id)) > 0) : ?>
+                                <?php foreach($listings as $listing) : ?>
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                    <div class="media influencer-profile-data d-flex align-items-center p-2">
+                                                        <div class="mr-4">
+                                                        <?php $listingId = $listing->id; $image = $listingL->getImage($listingId);?>
+                                                            <img src="<?=ASSETS?>listing-images/<?=$image->image?>" alt="listing image" class="user-avatar-lg">
+                                                        </div>
+                                                        <div class="media-body ">
+                                                            <div class="influencer-profile-data">
+                                                                <h3 class="m-b-10"><?= $listing->name?></h3>
+                                                                <p>
+                                                                    <span class="m-r-20 d-inline-block">Date Created
+                                                                        <span class="m-l-10 text-primary"><?=$listing->created_at?></span>
+                                                                    </span>
+                                                                    <span class="m-r-20 d-inline-block"> Date Updated
+                                                                        <span class="m-l-10 text-primary"><?=$listing->updated_at?></span>
+                                                                    </span>
+                                                                </p>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="border-top card-footer p-0">
-                                        <div class="campaign-metrics d-xl-inline-block">
-                                            <h4 class="mb-0">45k</h4>
-                                            <p>Total Reach</p>
-                                        </div>
-                                        <div class="campaign-metrics d-xl-inline-block">
-                                            <h4 class="mb-0">29k</h4>
-                                            <p>Total Views</p>
-                                        </div>
-                                        <div class="campaign-metrics d-xl-inline-block">
-                                            <h4 class="mb-0">5k</h4>
-                                            <p>Total Click</p>
-                                        </div>
-                                        <div class="campaign-metrics d-xl-inline-block">
-                                            <h4 class="mb-0">4k</h4>
-                                            <p>Engagement</p>
-                                        </div>
-                                        <div class="campaign-metrics d-xl-inline-block">
-                                            <h4 class="mb-0">2k</h4>
-                                            <p>Conversion</p>
+                                        <div class="border-top card-footer p-0">
+                                            <div class="campaign-metrics d-xl-inline-block">
+                                                <h4 class="mb-0"><?=$listing->views?></h4>
+                                                <p>Total Views</p>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
+                                <?php endforeach;?>
                             <?php else :?>
                                 <h4 style="text-align: center;">No Listing Yet</h4>
                             <?php endif;?>
-                            <div class="card">
-                                    <div class="card-body">
-                                        <div class="row">
-                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                                <div class="media influencer-profile-data d-flex align-items-center p-2">
-                                                    <div class="mr-4">
-                                                        <img src="assets/images/slack.png" alt="listing image" class="user-avatar-lg">
-                                                    </div>
-                                                    <div class="media-body ">
-                                                        <div class="influencer-profile-data">
-                                                            <h3 class="m-b-10">Your Campaign Title Here</h3>
-                                                            <p>
-                                                                <span class="m-r-20 d-inline-block">Draft Due Date
-                                                                    <span class="m-l-10 text-primary">24 Jan 2018</span>
-                                                                </span>
-                                                                <span class="m-r-20 d-inline-block"> Publish Date
-                                                                    <span class="m-l-10 text-secondary">30 Feb 2018</span>
-                                                                </span>
-                                                                    <span class="m-r-20 d-inline-block">Ends <span class="m-l-10  text-info">30 May, 2018</span>
-                                                                </span>
-                                                            </p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="border-top card-footer p-0">
-                                        <div class="campaign-metrics d-xl-inline-block">
-                                            <h4 class="mb-0">45k</h4>
-                                            <p>Total Reach</p>
-                                        </div>
-                                        <div class="campaign-metrics d-xl-inline-block">
-                                            <h4 class="mb-0">29k</h4>
-                                            <p>Total Views</p>
-                                        </div>
-                                        <div class="campaign-metrics d-xl-inline-block">
-                                            <h4 class="mb-0">5k</h4>
-                                            <p>Total Click</p>
-                                        </div>
-                                        <div class="campaign-metrics d-xl-inline-block">
-                                            <h4 class="mb-0">4k</h4>
-                                            <p>Engagement</p>
-                                        </div>
-                                        <div class="campaign-metrics d-xl-inline-block">
-                                            <h4 class="mb-0">2k</h4>
-                                            <p>Conversion</p>
-                                        </div>
-                                    </div>
-                                </div>
                         </div>
                     </div>
                 </div>
