@@ -1,3 +1,17 @@
+<?php
+
+    use App\Models\User;
+    use App\Models\Listing;
+
+    $listing = new Listing;
+
+    $user = new User;
+
+
+    $users = $user->getAll();
+
+?>        
+        
         <?php include_once "includes/header.php"?>
 
         <?php include_once "includes/sidebar.php"?>    
@@ -12,7 +26,7 @@
                             <div class="card-body">
                                 <div class="d-inline-block">
                                     <h5 class="text-muted">Total Agents</h5>
-                                    <h2 class="mb-0"></h2>
+                                    <h2 class="mb-0"><?=esc(count($user->getAll()))?></h2>
                                 </div>
                                 <div class="float-right icon-circle-medium  icon-box-lg  bg-info-light mt-1">
                                     <i class="fa fa-users fa-fw fa-sm text-info"></i>
@@ -28,7 +42,7 @@
                             <div class="card-body">
                                 <div class="d-inline-block">
                                     <h5 class="text-muted">Total Listings</h5>
-                                    <h2 class="mb-0"></h2>
+                                    <h2 class="mb-0"><?=esc(count($listing->getAll()))?></h2>
                                 </div>
                                 <div class="float-right icon-circle-medium  icon-box-lg  bg-primary-light mt-1">
                                     <i class="fa fa-home fa-fw fa-sm text-primary"></i>
@@ -213,51 +227,36 @@
                                             <th class="border-0"></th>
                                             <th class="border-0">Agent's Name</th>
                                             <th class="border-0">No. Listings</th>
-                                            <th class="border-0"></th>
                                             <th class="border-0">Date Joined</th>
-                                            <th class="border-0"></th>
                                             <th class="border-0">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <?php #$users = $user->getUsers(); if(count($user->getUsers()) > 0) : ?>
-                                            <?php #foreach($users as $user) : ?>
-                                                <tr>
-                                                    <td>
-                                                        <div class="m-r-10"><img src="<?= ROOT_URL?>profile-pictures/<? #$user['image']?>" alt="user" width="35"></div>
-                                                    </td>
-                                                    <td></td>
-                                                    <td>
-                                                        <div class="avatar-group">
-                                                            <span><a href="#"><i class="fab fa-fw fa-facebook-square facebook-color"></i></a></span>
-                                                            <span><a href="#"><i class="fab fa-fw fa-twitter-square twitter-color"></i></a></span>
-                                                            <span><a href="#"><i class="fab fa-fw fa-instagram instagram-color"></i></a></span>
-                                                            <span><a href="#"><i class="fab fa-fw fa-pinterest-square pinterest-color"></i></a></span>
+                                        <?php foreach($users as $user) : ?>
+                                            <tr>
+                                                <td>
+                                                    <div class="m-r-10"><img src="<?= ASSETS ?>profile-pictures/<?= esc($user->image)?>" alt="user" width="35"></div>
+                                                </td>
+                                                <td><?= ucfirst(esc($user->fname))?> <?= ucfirst(esc($user->lname))?></td>
+                                                <td><?= esc($user->total_listings)?></td>
+                                                <td><?= esc($user->created_at)?></td>
+                                                <td>
+                                                    <div class="dropdown float-right">
+                                                        <a href="#" class="dropdown-toggle card-drop" data-toggle="dropdown" aria-expanded="true">
+                                                                <i class="mdi mdi-dots-vertical"></i>
+                                                                    </a>
+                                                        <div class="dropdown-menu dropdown-menu-right">
+                                                            <a href="javascript:void(0);" class="dropdown-item">Block</a>
+                                                            <!-- <a href="<?= ROOT_URL?>/dashboard/user" class="dropdown-item">view</a> -->
+                                                            <form action="<?=ROOT_URL?>/dashboard/user" method="post">
+                                                                <input type="text" value="<?= $user->id?>" name="user_id" hidden>
+                                                                <button class="dropdown-item" name="viewUser">view</button>
+                                                            </form>
                                                         </div>
-                                                    </td>
-                                                    <td>1,00,000 / 1,50,000</td>
-                                                    <td>70%</td>
-                                                    <td>7 Aug,2018</td>
-                                                    <td>
-                                                        <div class="dropdown float-right">
-                                                            <a href="#" class="dropdown-toggle card-drop" data-toggle="dropdown" aria-expanded="true">
-                                                                    <i class="mdi mdi-dots-vertical"></i>
-                                                                            </a>
-                                                            <div class="dropdown-menu dropdown-menu-right">
-                                                                <!-- item-->
-                                                                <a href="javascript:void(0);" class="dropdown-item">Sales Report</a>
-                                                                <!-- item-->
-                                                                <a href="javascript:void(0);" class="dropdown-item">Export Report</a>
-                                                                <!-- item-->
-                                                                <a href="javascript:void(0);" class="dropdown-item">Profit</a>
-                                                                <!-- item-->
-                                                                <a href="javascript:void(0);" class="dropdown-item">Action</a>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            <?php #endforeach;?>
-                                        <?php #endif;?>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        <?php endforeach;?>
                                     </tbody>
                                 </table>
                             </div>

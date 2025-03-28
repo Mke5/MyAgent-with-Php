@@ -11,6 +11,7 @@ class Listing {
     use Database;
 
     protected $table = 'listings';
+    protected $ownerTable = 'users';
     protected $tableImages = 'listings_images';
 
     public function validate($data)
@@ -263,6 +264,14 @@ class Listing {
 
         return $result ? $result : [];
     }
+
+    public function getUser($id)
+    {
+        $sql = "SELECT * FROM $this->ownerTable WHERE id = :id";
+        $result = $this->read($sql, ['id' => $id]);
+
+        return $result ? $result[0] : [];
+    }
     
     public function findByCategoryId($id)
     {
@@ -288,15 +297,15 @@ class Listing {
         return $result ? $result : [];
     }
 
-    public function getOneListingImage($listingId)
+    public function getImage($listingId)
     {
         $sql = "SELECT * FROM $this->tableImages WHERE listing_id = :listing_id ORDER BY id ASC LIMIT 1";
         $result = $this->read($sql, ['listing_id' => $listingId]);
 
-        return $result ? $result : [];
+        return $result ? $result[0] : [];
     }
 
-    public function getListingImages($listingId)
+    public function getImages($listingId)
     {
         $sql = "SELECT * FROM $this->tableImages WHERE listing_id = :listing_id";
         $result = $this->read($sql, ['listing_id' => $listingId]);
@@ -304,7 +313,7 @@ class Listing {
         return $result ? $result : [];
     }
 
-    public function getAllListings()
+    public function getAll()
     {
         $sql = "SELECT * FROM $this->table";
         $result = $this->read($sql);
