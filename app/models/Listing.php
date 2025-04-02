@@ -204,7 +204,7 @@ class Listing {
             throw new \Exception('Failed to upload image: ' . $image['name']);
         }
 
-        return $imagePath;
+        return $imageName;
     }   
 
     public function create($data, $images)

@@ -11,7 +11,7 @@
     $category = (isset($_GET['category'])) ? filter_input(INPUT_GET, 'category', FILTER_SANITIZE_FULL_SPECIAL_CHARS) : "";
     $type = (isset($_GET['type'])) ? filter_input(INPUT_GET, 'type', FILTER_SANITIZE_FULL_SPECIAL_CHARS) : "";
 
-    $allListings = $listings->getAllListings();
+    $allListings = $listings->getAll();
 ?>
 
 <!DOCTYPE html>
@@ -137,11 +137,43 @@
         
         section{
             padding:2rem 4%;
-        }.featured .box-container{
-            display: flex;
-            flex-wrap: wrap;
+        }
+        
+        .featured .box-container{
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap:1.5rem;
         }
+
+        @media screen and (min-width: 1200px) { 
+    .featured .box-container {
+        grid-template-columns: repeat(4, 1fr); /* Force 5 cards per row on large screens */
+    }
+}
+
+@media screen and (max-width: 1024px) { 
+    .featured .box-container {
+        grid-template-columns: repeat(4, 1fr); /* 4 cards per row on medium screens */
+    }
+}
+
+@media screen and (max-width: 768px) { 
+    .featured .box-container {
+        grid-template-columns: repeat(3, 1fr); /* 3 cards per row on tablets */
+    }
+}
+
+@media screen and (max-width: 600px) { 
+    .featured .box-container {
+        grid-template-columns: repeat(2, 1fr); /* 2 cards per row on small screens */
+    }
+}
+
+@media screen and (max-width: 400px) { 
+    .featured .box-container {
+        grid-template-columns: repeat(1, 1fr); /* 1 card per row on very small screens */
+    }
+}
 
         .featured .box-container .box{
             border:.1rem solid rgba(0,0,0,.2);
@@ -348,32 +380,32 @@
             <?php if(is_array($allListings) && count($allListings) > 0) : ?>
                 <?php foreach($allListings as $listing) : ?>
                     <?php
-                        $listingId = $listing['id'];
-                        $image = $listings->getOneListingImage($listingId);
-                        $image = $image['image_path'];
+                        $listingId = $listing->id;
+                        $image = $listings->getImage($listingId);
+                        $image = $image->image;
                     ?>
                     <div class="box">
                         <div class="image-container">
-                            <img src="listing-images/<?=$image?>" alt="" />
+                            <img src="<?=ASSETS?>listing-images/<?=$image?>" alt="" class="listing-image"/>
                             <div class="info">
                                 <?php if(isset($_SESSION['user']) && $_SESSION['role'] === 'admin') : ?>
                                     <h3>3 days ago</h3>
                                 <?php endif;?>
-                                <h3><?= ($listing['category'] == "for_rent") ? "For Rent" : "For Sale"; ?></h3>
+                                <h3><?= ($listing->category == "for_rent") ? "For Rent" : "For Sale"; ?></h3>
                             </div>
                         </div>
                         <div class="content">
                             <div class="price">
-                                <h3>#<?= number_format($listing['price'], 2) ?></h3>
+                                <h3>#<?= number_format($listing->price, 2) ?></h3>
                             </div>
                             <div class="location">
-                                <h3><?= $listing['name'] ?></h3>
-                                <p><?= $listing['address'] ?></p>
+                                <h3><?= $listing->name ?></h3>
+                                <p><?= $listing->address ?></p>
                             </div>
                             <div class="details">
                                 <h3>sqft</h3>
-                                <h3><?= $listing['bedrooms']?> beds</h3>
-                                <h3><?= $listing['bathrooms']?> baths</h3>
+                                <h3><?= $listing->bedroom?> beds</h3>
+                                <h3><?= $listing->bathroom?> baths</h3>
                             </div>
                             <div class="buttons">
                                 <form action="<?= ROOT_URL ?>view" method="post">

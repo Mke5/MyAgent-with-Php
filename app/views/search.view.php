@@ -19,7 +19,7 @@
                    
         }else {
 
-            $searchedListings = $listings->getAllListings();
+            $searchedListings = $listings->getAll();
             
         }
     } else {
@@ -350,6 +350,43 @@
             background-color: #5763d3;
         }
 
+        .featured .box-container{
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap:1.5rem;
+        }
+
+        @media screen and (min-width: 1200px) { 
+    .featured .box-container {
+        grid-template-columns: repeat(4, 1fr); /* Force 5 cards per row on large screens */
+    }
+}
+
+@media screen and (max-width: 1024px) { 
+    .featured .box-container {
+        grid-template-columns: repeat(4, 1fr); /* 4 cards per row on medium screens */
+    }
+}
+
+@media screen and (max-width: 768px) { 
+    .featured .box-container {
+        grid-template-columns: repeat(3, 1fr); /* 3 cards per row on tablets */
+    }
+}
+
+@media screen and (max-width: 600px) { 
+    .featured .box-container {
+        grid-template-columns: repeat(2, 1fr); /* 2 cards per row on small screens */
+    }
+}
+
+@media screen and (max-width: 400px) { 
+    .featured .box-container {
+        grid-template-columns: repeat(1, 1fr); /* 1 card per row on very small screens */
+    }
+}
+
+
     </style>
 </head>
 <body id="page-content">
@@ -358,7 +395,7 @@
     <?php include_once "includes/header.php";?>
 
     <!-- Search bar -->
-    <form class="filter-form" action="search.php" method="post">
+    <form class="filter-form" action="search" method="post">
         <!-- 1) Text input with a flag icon -->
         <div class="input-group">
             <input 
@@ -402,14 +439,14 @@
             <?php if(count($searchedListings) > 0) : ?>
                 <?php foreach($searchedListings as $listing) : ?>
                     <?php
-                        $listingId = $listing['id'];
-                        $image = $listings->getOneListingImage($listingId);
-                        $image = $image['image_path'];
+                        $listingId = $listing->id;
+                        $image = $listings->getImage($listingId);
+                        $image = $image->image;
                         $action = ROOT_URL.'listing-details.php';
                     ?>
                     <div class="box">
                         <div class="image-container">
-                            <img src="listing-images/<?=$image?>" alt="" />
+                            <img src="<?=ASSETS?>listing-images/<?=$image?>" alt="" />
                             <div class="info">
                                 <?php if(isset($_SESSION['user']) && $_SESSION['role'] === 'admin') : ?>
                                     <h3>3 days ago</h3>
@@ -419,16 +456,16 @@
                         </div>
                         <div class="content">
                             <div class="price">
-                                <h3>#<?= number_format($listing['price'], 2) ?></h3>
+                                <h3>#<?= number_format($listing->price, 2) ?></h3>
                             </div>
                             <div class="location">
-                                <h3><?= $listing['name'] ?></h3>
-                                <p><?= $listing['address'] ?></p>
+                                <h3><?= $listing->name ?></h3>
+                                <p><?= $listing->address ?></p>
                             </div>
                             <div class="details">
                                 <h3>sqft</h3>
-                                <h3><?= $listing['bedrooms']?> beds</h3>
-                                <h3><?= $listing['bathrooms']?> baths</h3>
+                                <h3><?= $listing->bedroom?> beds</h3>
+                                <h3><?= $listing->bathroom?> baths</h3>
                             </div>
                             <div class="buttons">
                                 <form action="<?= ROOT_URL ?>view" method="post">
