@@ -6,7 +6,7 @@ defined('ROOTPATH') OR exit('Access Denied!');
 
 use Core\Session;
 
-class Listing extends Controller
+class Listings extends Controller
 {
 
 	public function index()

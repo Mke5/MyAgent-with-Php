@@ -130,7 +130,5 @@
         </footer>
     </div>
 
-
-    <script src="<?= ASSETS ?>js/index.js"></script>
 </body>
 </html>

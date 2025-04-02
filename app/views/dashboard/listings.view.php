@@ -6,8 +6,6 @@
 
     $listings = $listingL->getAll();
 
-    include_once 'dashboard/includes/states.php';
-
 ?>
 
 <?php include_once "includes/header.php"?>
@@ -56,7 +54,7 @@
                                                         <i class="mdi mdi-dots-vertical"></i>
                                                     </a>
                                                     <div class="dropdown-menu dropdown-menu-right">
-                                                        <form action="<?=ROOT_URL?>/dashboard/user" method="post">
+                                                        <form action="<?=ROOT_URL?>/view" method="post">
                                                             <input type="text" value="<?= $listing->id?>" name="listing_id" hidden>
                                                             <button class="dropdown-item" name="viewListing">View</button>
                                                         </form>

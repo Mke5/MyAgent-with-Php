@@ -825,11 +825,15 @@ a.pagination-item:hover {
   flex: 1;
   overflow: hidden;
   display: flex;
+  height: 100%;
+  width: 100%;
   align-items: center;
   justify-content: start;
 }
 
 .car-active-image {
+  min-width: 100%;
+  min-height: 100%;
   max-width: 100%;
   max-height: 100%;
   border-radius: 1rem;

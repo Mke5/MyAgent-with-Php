@@ -55,7 +55,7 @@
             </label>
 
             <a href="<?= ROOT_URL ?>" style="margin-bottom: 2rem;">MyAgent</a>
-            <a href="<?= ROOT_URL ?>/listing">Listings</a>
+            <a href="<?= ROOT_URL ?>/listings">Listings</a>
             <a href="<?= ROOT_URL ?>/about">About</a>
 
             <?php if($session->user('role')): ?>
@@ -82,7 +82,7 @@
             <a href="<?= ROOT_URL ?>" class="Tlogo">MyAgent</a>
             <ul class="nav-links">
                 <li class="dropdown">
-                    <a href="<?= ROOT_URL ?>/listing" class="dropdown-link">Listings</a>
+                    <a href="<?= ROOT_URL ?>/listings" class="dropdown-link">Listings</a>
                 </li>
                 <li><a href="<?= ROOT_URL ?>/about">About</a></li>
                 

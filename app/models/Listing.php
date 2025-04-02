@@ -126,8 +126,9 @@ class Listing {
 
     private function createListing($db, $data)
     {
-        $sql = "INSERT INTO $this->table (name, description, sittingroom, bathroom, bedroom, kitchen, price, category, author_id, address, state, lga) 
-                VALUES (:type, :description, :sittingroom, :bathroom, :bedroom, :kitchen, :price, :category, :user_id, :address, :state, :lga)";
+        $link = substr(md5(microtime()), 0, 6);
+        $sql = "INSERT INTO $this->table (name, description, sittingroom, bathroom, bedroom, kitchen, price, category, author_id, address, state, lga, link) 
+                VALUES (:type, :description, :sittingroom, :bathroom, :bedroom, :kitchen, :price, :category, :user_id, :address, :state, :lga, $link)";
         
         $stmt = $db->prepare($sql);
         if ($stmt->execute($data)) {
@@ -254,7 +255,15 @@ class Listing {
         $sql = "SELECT * FROM $this->table WHERE id = :id LIMIT 1";
         $result = $this->read($sql, ['id' => $id]);
 
-        return $result ? $result : [];
+        return $result ? $result[0] : [];
+    }
+
+    public function findByLink($id)
+    {
+        $sql = "SELECT * FROM $this->table WHERE link = :id LIMIT 1";
+        $result = $this->read($sql, ['id' => $id]);
+
+        return $result ? $result[0] : [];
     }
     
     public function findByUserId($id)
