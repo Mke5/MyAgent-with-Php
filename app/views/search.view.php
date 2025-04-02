@@ -2,6 +2,7 @@
     require_once "../app/core/init.php";
 
     use app\models\Listing;
+    $session = new Core\Session;
 
     $listings = new Listing();
     $searchedListings = [];
@@ -27,6 +28,8 @@
         header('location: ' . ROOT_URL .'listing');
         die();
     }
+
+    include_once 'dashboard/includes/states.php';
 ?>
 
 <!DOCTYPE html>
@@ -417,14 +420,10 @@
         </select>
 
         <select name="address" class="filter-select">
-            <option value="">Select Town</option>
-            <option value="Bulumkutu">Bulumkutu</option>
-            <option value="Polo">Polo</option>
-            <option value="Wulari">Wulari</option>
-            <option value="Moduganari">Moduganari</option>
-            <option value="Gomari">Gomari</option>
-            <option value="Gwange">Gwange</option>
-            <option value="Baga road">Baga road</option>
+            <option value="">State</option>
+            <?php foreach ($states as $state => $lgas): ?>
+                <option value="<?= $state ?>"><?= $state ?></option>
+            <?php endforeach; ?>
         </select>
 
         <!-- 3) Search button -->
@@ -448,10 +447,10 @@
                         <div class="image-container">
                             <img src="<?=ASSETS?>listing-images/<?=$image?>" alt="" />
                             <div class="info">
-                                <?php if(isset($_SESSION['user']) && $_SESSION['role'] === 'admin') : ?>
-                                    <h3>3 days ago</h3>
+                                <?php if($session->is_logged_in() && $session->user('role') == 'admin') : ?>
+                                    <h3><?=$listings->timeAgo($listing->created_at)?></h3>
                                 <?php endif;?>
-                                <h3>for rent</h3>
+                                <h3><?= $listing->category == 'for_sale' ? 'for Sale' : 'for Rent'?></h3>
                             </div>
                         </div>
                         <div class="content">

@@ -56,14 +56,14 @@
                     ?>
                         <?php foreach ($randomListings as $listing) : ?>
                             <?php
-                                $listingId = $listing['id'];
-                                $listingImage = $listings->getOneListingImage($listingId);
-                                $imagePath = $listingImage ? $listingImage['image_path'] : 'default.jpg'; // Use fallback image if null
+                                $listingId = $listing->id;
+                                $listingImage = $listings->getImage($listingId);
+                                $imagePath = $listingImage ? $listingImage->image : 'default.jpg'; // Use fallback image if null
                             ?>
                             <form action="<?= ROOT_URL ?>/view" method="post">
                                 <input type="text" value="<?=$listingId?>" name="listingId" hidden>
                                 <button name="view">
-                                    <img src="<?=ROOT_URL?>/public/listing-images/<?=$imagePath?>" alt="">
+                                    <img src="<?=ASSETS?>/listing-images/<?=$imagePath?>" alt="">
                                 </button>
                             </form>
                         <?php endforeach; ?>
@@ -81,34 +81,34 @@
 
                 <?php foreach($_listings as  $_listing) : ?>
                     <?php
-                        $listingId = $_listing['id'];
+                        $listingId = $_listing->id;
     
-                        $image = $listings->getOneListingImage($listingId);
+                        $image = $listings->getImage($listingId);
                     ?>
                      
-                    <form action="<?= ROOT_URL ?>view" method="post">
+                    <form action="<?= ROOT_URL ?>/view" method="post">
                         <input name="listingId" type="text" value="<?=$listingId?>" hidden>
                         <button name="view" class="property-item">
-                            <img src="<?=ROOT_URL?>/public/listing-images/<?=$image['image_path']?>" alt="Property 1">
+                            <img src="<?=ASSETS?>/listing-images/<?=$image->image?>" alt="Property 1">
                             <figcaption>
                                 <main>
                                     <p class="small">
                                         <?php
-                                            if ($_listing['category'] == "for_rent") {
+                                            if ($_listing->category == "for_rent") {
                                                 echo "For Rent";
                                             } else {
                                                 echo "For Sale";
                                             }                                            
                                         ?>
                                     </p>
-                                    <h3><?=$listing['name']?>, <em><?=$listing['address']?></em></h3>
-                                    <p><?= substr($listing['description'], 0, 10) ?>...</p>
+                                    <h3><?=$listing->name?>, <em><?=$listing->state?></em></h3>
+                                    <p><?= substr($listing->description, 0, 10) ?>...</p>
                                 </main>
     
                                 <div class="footer">
                                     <div>
                                         <p class="small">From</p>
-                                        <p class="price">#<?= $listing['price']?></p>
+                                        <p class="price">#<?= $listing->price?></p>
                                     </div>
     
                                     <a>

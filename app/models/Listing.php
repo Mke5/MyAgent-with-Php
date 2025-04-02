@@ -332,7 +332,7 @@ class Listing {
         }
 
         if (!empty($address)) {
-            $sql .= " AND address = :address";
+            $sql .= " AND state = :address";
             $params['address'] = $address;
         }
 
