@@ -40,8 +40,6 @@
         <!-- Navbar -->
         <?php include_once "includes/header.php";?>
     
-    
-        <!-- First Hero Section: Welcome Message + Image Slider -->
         <section class="hero-1">
             <div class="hero-left">
                 <h1>Find your next Perfect Place with ease</h1>
@@ -54,11 +52,13 @@
                     <?php
                         $randomListings = $listings->getRandomListing();
                     ?>
-                        <?php foreach ($randomListings as $listing) : ?>
+                        <?php foreach ($randomListings as $listing1) : ?>
                             <?php
-                                $listingId = $listing->id;
+                            // show($listing1);
+                            // die;
+                                $listingId = $listing1->id;
                                 $listingImage = $listings->getImage($listingId);
-                                $imagePath = $listingImage ? $listingImage->image : 'default.jpg'; // Use fallback image if null
+                                $imagePath = $listingImage ? $listingImage->image : 'default.jpg';
                             ?>
                             <form action="<?= ROOT_URL ?>/view" method="post">
                                 <input type="text" value="<?=$listingId?>" name="listingId" hidden>
@@ -101,14 +101,14 @@
                                             }                                            
                                         ?>
                                     </p>
-                                    <h3><?=$listing->name?>, <em><?=$listing->state?></em></h3>
-                                    <p><?= substr($listing->description, 0, 10) ?>...</p>
+                                    <h3><?=$_listing->name?>, <em><?=$_listing->state?></em></h3>
+                                    <p><?= substr($_listing->description, 0, 10) ?>...</p>
                                 </main>
     
                                 <div class="footer">
                                     <div>
                                         <p class="small">From</p>
-                                        <p class="price">#<?= $listing->price?></p>
+                                        <p class="price">₦<?= $_listing->price?></p>
                                     </div>
     
                                     <a>
@@ -130,5 +130,6 @@
         </footer>
     </div>
 
+    <script src="<?=ASSETS?>js/index.js"></script>
 </body>
 </html>

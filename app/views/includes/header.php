@@ -19,10 +19,10 @@
             session_destroy();
             session_regenerate_id(true);
         }
+        $profilePicture = ASSETS . "profile-pictures/" . esc($user->getUserImage($userId));
     }
     
 
-    $profilePicture = ASSETS . "profile-pictures/" . esc($user->getUserImage($userId));
 
     if(isset($userId)){
         $userImg = esc($user->getUserImage($userId));
