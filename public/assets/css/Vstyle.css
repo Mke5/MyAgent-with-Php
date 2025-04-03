@@ -262,7 +262,7 @@ hr {
 }
 
 a {
-  color: var(--link-color);
+  color: #000;
 }
 
 input:not([type="radio"]):not([type="checkbox"]),

@@ -467,7 +467,7 @@
                                 <h3><?= $listing->bathroom?> baths</h3>
                             </div>
                             <div class="buttons">
-                                <form action="<?= ROOT_URL ?>view" method="post">
+                                <form action="<?= ROOT_URL ?>/view" method="post">
                                     <input type="hidden" name="listingId" value="<?= $listingId ?>">
                                     <button type="submit" class="btnL" name="view">View Details</button>
                                 </form>

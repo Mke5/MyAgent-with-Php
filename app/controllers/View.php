@@ -33,9 +33,7 @@ class View extends Controller
                 die;
             }
         } elseif (isset($_GET['listing'])) {
-            $listingId = filter_var($_GET['listing'], FILTER_VALIDATE_INT);
-            show($listingId);
-            die;
+            $listingId = esc(filter_var($_GET['listing'], FILTER_SANITIZE_FULL_SPECIAL_CHARS));
             $listing = $listings->findByLink($listingId);
             if($listing != []){
                 $firstImg = $listings->getImage($listing->id);

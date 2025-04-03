@@ -96,7 +96,7 @@
               <tbody>
                 <tr>
                   <th>Category</th>
-                  <td><?= esc($listing->category)?></td>
+                  <td><?= esc($listing->category) == "for_sale" ? "For Sale" : "For Rent"?></td>
                 </tr>
                 <tr>
                   <th>Bedrooms</th>
@@ -119,17 +119,33 @@
             <hr />
 
             <div class="flex gap-1 my-medium">
-              <a href="<?=ROOT_URL?>/view?listing=<?=$listing->link?>" onclick="copyToClipboard(this.href); return false;" class="btn">Copy Link</a>
+              <button style="color: #000;" onclick="copyToClipboard('<?=ROOT_URL?>/view?listing=<?=$listing->link?>', this)" class="btn"><a>Copy Link</a></button>
             </div>
 
             <script>
-              function copyToClipboard(text) {
+              function copyToClipboard(text, buttonElement) {
                 navigator.clipboard.writeText(text)
-                  .then(() => alert('Link copied: ' + text))
-                  .catch(err => console.error('Failed to copy: ', err));
+                  .then(() => {
+                    const originalText = buttonElement.textContent;
+                    
+                    buttonElement.textContent = "Copied!";
+                    buttonElement.style.color = "#4CAF50";
+                    
+                    setTimeout(() => {
+                      buttonElement.textContent = originalText;
+                      buttonElement.style.color = "#000";
+                    }, 1000);
+                  })
+                  .catch(err => {
+                    console.error('Failed to copy: ', err);
+                    buttonElement.textContent = "Error!";
+                    setTimeout(() => {
+                      buttonElement.textContent = "Copy Link";
+                    }, 1000);
+                  });
               }
             </script>
-            <a href="" class="car-details-phone">
+            <a href="" style="color: #000;border-color: #000;" class="car-details-phone">
               Contact Agent
             </a>
           </div>

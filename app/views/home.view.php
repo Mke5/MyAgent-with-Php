@@ -44,7 +44,7 @@
             <div class="hero-left">
                 <h1>Find your next Perfect Place with ease</h1>
                 <p>Your perfect home is waiting for you. Find, explore, and make your dream home a reality today.</p>
-                <a href="<?=ROOT_URL?>/listing" class="btn-primary">Get Started</a>
+                <a href="<?=ROOT_URL?>/listings" class="btn-primary">Get Started</a>
                 
             </div>
             <div class="hero-right">

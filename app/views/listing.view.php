@@ -12,6 +12,7 @@
     $type = (isset($_GET['type'])) ? filter_input(INPUT_GET, 'type', FILTER_SANITIZE_FULL_SPECIAL_CHARS) : "";
 
     $allListings = $listings->getAll();
+    include_once 'dashboard/includes/states.php';
 ?>
 
 <!DOCTYPE html>
@@ -357,14 +358,10 @@
         </select>
 
         <select name="address" class="filter-select">
-            <option value="">Select Town</option>
-            <option value="Bulumkutu">Bulumkutu</option>
-            <option value="Polo">Polo</option>
-            <option value="Wulari">Wulari</option>
-            <option value="Moduganari">Moduganari</option>
-            <option value="Gomari">Gomari</option>
-            <option value="Gwange">Gwange</option>
-            <option value="Baga road">Baga road</option>
+            <option value="">State</option>
+            <?php foreach ($states as $state => $lgas): ?>
+                <option value="<?= $state ?>"><?= $state ?></option>
+            <?php endforeach; ?>
         </select>
 
         <!-- 3) Search button -->
